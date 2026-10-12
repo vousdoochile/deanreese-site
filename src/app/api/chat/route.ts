@@ -1,66 +1,49 @@
-﻿@'
 import OpenAI from "openai";
 import { buildSystemPrompt } from "@/lib/chat";
 
 export const runtime = "nodejs";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 type ChatRequestBody = {
-  messages: { role: "user" | "assistant"; content: string }[];
+  messages?: { role: "user" | "assistant"; content: string }[];
 };
-
-function getAllowedOrigins(): string[] {
-  const raw = process.env.CHAT_ALLOWED_ORIGINS || "";
-  return raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function isOriginAllowed(origin: string | null): boolean {
-  if (!origin) return false;
-  const allowed = getAllowedOrigins();
-  if (allowed.length === 0) return true;
-  return allowed.includes(origin);
-}
 
 const RATE = { windowMs: 60_000, max: 25 };
 const hits = new Map<string, { count: number; resetAt: number }>();
 
-function getIP(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for");
-  return xff ? xff.split(",")[0].trim() : "unknown";
+function originAllowed(origin: string | null): boolean {
+  if (!origin) return false;
+  const allowed = (process.env.CHAT_ALLOWED_ORIGINS || "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  return allowed.length === 0 || allowed.includes(origin);
 }
 
-function allowRequest(ip: string): boolean {
+function rateAllowed(ip: string): boolean {
   const now = Date.now();
-  const rec = hits.get(ip);
-
-  if (!rec || now > rec.resetAt) {
+  const record = hits.get(ip);
+  if (!record || now >= record.resetAt) {
     hits.set(ip, { count: 1, resetAt: now + RATE.windowMs });
     return true;
   }
-
-  if (rec.count >= RATE.max) return false;
-
-  rec.count += 1;
-  hits.set(ip, rec);
+  if (record.count >= RATE.max) return false;
+  record.count += 1;
   return true;
 }
 
 export async function POST(req: Request) {
-  const origin = req.headers.get("origin");
-
-  if (!isOriginAllowed(origin)) {
+  if (!originAllowed(req.headers.get("origin"))) {
     return new Response("Forbidden", { status: 403 });
   }
 
-  const ip = getIP(req);
-  if (!allowRequest(ip)) {
+  const clientIP = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (!rateAllowed(clientIP)) {
     return new Response("Too Many Requests", { status: 429 });
+  }
+
+  const length = Number(req.headers.get("content-length") || "0");
+  if (length > 16000) {
+    return new Response("Request too large", { status: 413 });
   }
 
   let body: ChatRequestBody;
@@ -70,30 +53,33 @@ export async function POST(req: Request) {
     return new Response("Bad Request", { status: 400 });
   }
 
-  const userLast =
-    [...(body.messages || [])].reverse().find((m) => m.role === "user")?.content || "";
+  const messages = Array.isArray(body?.messages) ? body.messages : [];
+  const message = [...messages].reverse().find((item) => item?.role === "user")?.content;
+  if (typeof message !== "string" || !message.trim() || message.length > 1500) {
+    return new Response("Question must be 1 to 1500 characters", { status: 400 });
+  }
 
-  if (!userLast.trim()) {
-    return Response.json({ answer: "Ask a question to get started." });
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return Response.json({ answer: "Chat is temporarily unavailable." }, { status: 503 });
   }
 
   try {
+    const client = new OpenAI({ apiKey });
     const response = await client.responses.create({
       model: "gpt-5.2",
       input: [
         { role: "system", content: buildSystemPrompt() },
-        { role: "user", content: userLast },
+        { role: "user", content: message.trim() },
       ],
       temperature: 0.2,
       max_output_tokens: 350,
     });
 
-    const answer =
-      response.output_text?.trim() || "I don’t have that information on the site yet.";
-
-    return Response.json({ answer });
+    return Response.json({
+      answer: response.output_text?.trim() || "I don’t have that information on the site yet.",
+    });
   } catch {
-    return Response.json({ answer: "I don’t have that information on the site yet." });
+    return Response.json({ answer: "Chat is temporarily unavailable." }, { status: 503 });
   }
 }
-'@ | Set-Content -Encoding UTF8 src\app\api\chat\route.ts
