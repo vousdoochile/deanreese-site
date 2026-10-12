@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dean Reese personal site
 
-## Getting Started
+Next.js site for https://deanreese.me, deployed through GitHub and Vercel.
 
-First, run the development server:
+## One source of truth for the website AND AI Q&A
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Edit these two files when updating public content:**
+
+- `src/content/site.ts`: headline, location, professional experience, founder portfolio, projects, areas of focus, resume highlights, education and certifications.
+- `src/content/writing.ts`: articles, publication dates, summaries, bullet points and complete article bodies. To add a post, also add its slug to `writingOrder` in the same file.
+
+The Home, Work, Writing, article and online Resume pages read these shared content files. The chatbot's `src/lib/siteContent.ts` generates its approved knowledge directly from those same files. There is no second set of descriptions or manually copied article text to maintain.
+
+## Publish updates
+
+Push changes to GitHub's `main` branch. Vercel will automatically build and deploy. The chatbot's knowledge updates as part of that deployment. You do not need to re-enter the same facts in the chatbot.
+
+## Boundaries
+
+- Only information explicitly approved for publication in these source files is included. Do not add private Stripe account details, internal metrics, customer identities or other secrets.
+- The **PDF resume** in `public/Dean Reese - Resume.pdf` is a separate binary file. Replacing it or updating its details is a separate step and is **not** automatic.
+- External sites such as `homebaseddaddy.com` are linked, but not automatically crawled or copied. Add any new approved facts to `src/content/site.ts`.
+- The chatbot answers from approved content; this limits guessing but cannot guarantee error-free answers. Test new content with known and unknown questions.
+
+## Develop and validate
+
+```powershell
+npm install
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create `.env.local` with `OPENAI_API_KEY` to test the chat API locally (never commit secrets). In production the key lives in Vercel environment variables.
