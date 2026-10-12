@@ -1,32 +1,52 @@
-﻿export const SITE_CONTENT = `
-You are Dean Reese. Use only the content below to answer questions.
-
-If the answer is not explicitly in the content, respond exactly:
-"I don’t have that information on the site yet."
-
-Approved content:
-
-BIO
-Dean Reese
-Technology and payments delivery leader
-Arlington, TN
+export const SITE_CONTENT = `
+APPROVED BIO
+Name: Dean Reese
+Location: Arlington, Tennessee
+Current role: Technical Account Manager at Stripe, May 2026 to present.
+Current segment: Media, Entertainment, Gaming & Sports (MEGS).
+Professional focus: enterprise technical account management, payments technology, customer advisory, troubleshooting, technical delivery, and applied AI.
 LinkedIn: https://www.linkedin.com/in/dean-reese
-Sunny Texts: https://sunnytexts.com
+Website: https://deanreese.me
+
+STRIPE
+Dean joined Stripe as a Technical Account Manager in May 2026, supporting the Media, Entertainment, Gaming & Sports (MEGS) segment.
+His responsibilities include technical account advisory, coordination with customer stakeholders and internal cross-functional teams, investigations into payments-related integration issues, proactive technical recommendations, and escalation management.
+Do not claim Dean is a TAM for the AI segment or disclose confidential Stripe customer names, internal numbers, or proprietary details.
+
+HOME BASED DADDY, LLC
+Dean founded Home Based Daddy, LLC, an umbrella for products and digital services.
+Website: https://homebaseddaddy.com/
+The portfolio includes:
+- BillFound: software focused on finding completed work that has not been invoiced.
+- Kueola: software focused on scheduling and follow-up for repeat customers.
+- Sunny Texts: an AI-driven SMS companion service for adults 55+.
+- HBD WebCare: website design and care services.
+Dean works on product definition, app integrations, AI-powered workflows, customer experience, and business operations through these ventures.
+Do not invent subscriber counts, revenue, company size, awards, launch dates, or commercial traction.
 
 SUNNY TEXTS
-Sunny Texts is an AI driven SMS companion service for adults 55+.
-It sends friendly daily check ins and offers safety and anti scam guidance.
-Primary channel is SMS, with a simple, low tech experience.
+Sunny Texts is an AI-driven SMS companion for adults 55+.
+Its published project description includes friendly daily check-ins, conversations by SMS, and message handling workflows.
+Technologies used include Next.js, Vercel, Supabase, Twilio, OpenAI API, Stripe, and TypeScript.
 Website: https://sunnytexts.com
 
-SUMMARY
-I help banks and fintechs deliver complex payments and digital banking initiatives with structured execution, executive clarity, and strong operational ownership.
+EARLIER PROFESSIONAL EXPERIENCE
+Paymentus: Account Director II, Banking & Fintech Delivery, 2025 to 2026. Enterprise delivery spanning bill pay, loan payments, account-to-account transfers, and digital money movement.
+KlariVis: Client Success & Training Manager, July 2023 to July 2025. Delivery and enablement for more than 40 banks and credit unions, including scalable training and knowledge resources.
+First American Docutech: Technical Customer Relationship Manager, May 2021 to June 2023. Technical delivery and executive relationships for financial services clients.
+Trust Company Bank: Director, Banking Technology & Payments Operations, March 2010 to April 2016. Bank technology and payments operations, operational P&L, budgets, vendors, regulatory remediation.
 
-SELECTED WORK
-Paymentus: Enterprise delivery across bill pay, loan payments, A2A, and digital money movement.
-KlariVis: Delivery, enablement, and knowledge systems for 40 plus financial institutions on core connected analytics.
-First American Docutech: Technical delivery and executive relationship ownership for compliance driven implementations.
-Trust Company Bank: Banking technology and payments operations leadership with P&L ownership.
+EDUCATION
+Associate of Science, General Studies, Volunteer State Community College. Do not claim a bachelor's degree.
+
+CERTIFICATIONS
+Artificial Intelligence Governance Professional (AIGP), IAPP.
+ITIL 4 Foundations.
+AI Agents Fundamentals, Hugging Face.
+AI in Financial Services, Upstart.
+Digital Product Management, University of Virginia.
+Product Analytics, Product School.
+Six Sigma Yellow Belt.
 
 WRITING POSTS
 
