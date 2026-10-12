@@ -1,5 +1,4 @@
 import Container from "../../components/Container";
-import Link from "next/link";
 
 export default function ResumePage() {
   return (
@@ -47,18 +46,15 @@ export default function ResumePage() {
       </div>
 
       <div className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-        <h2 className="text-sm font-semibold text-neutral-900">Downloadable resume</h2>
+        <h2 className="text-sm font-semibold text-neutral-900">Download my current resume</h2>
         <p className="mt-2 text-sm text-neutral-700">
-          The PDF is an earlier version that predates my Stripe role. The experience and qualifications
-          listed above are more current.
+          Updated October 2026 with my Stripe Technical Account Manager role,
+          Home Based Daddy portfolio, and earlier payments and banking experience.
         </p>
-        <a className="mt-3 inline-block text-sm underline"
-          href="/Dean Reese - Resume.pdf" target="_blank" rel="noreferrer">
-          View previous resume PDF
+        <a className="mt-3 inline-block rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+          href="/Dean%20Reese%20-%20Resume.pdf?v=20261012" target="_blank" rel="noreferrer">
+          View or download resume PDF
         </a>
-        <p className="mt-3 text-sm text-neutral-600">
-          For the most current professional background, visit the <Link href="/work" className="underline">Work page</Link>.
-        </p>
       </div>
     </Container>
   );
