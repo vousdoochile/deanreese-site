@@ -1,5 +1,8 @@
 import Container from "../components/Container";
 import Link from "next/link";
+import { siteProfile, experiences, ventures, focusAreas } from "../content/site";
+
+const featured = experiences.filter((role) => role.featuredTitle && role.featuredDescription);
 
 export default function HomePage() {
   return (
@@ -9,21 +12,15 @@ export default function HomePage() {
           <div className="space-y-4">
             <div>
               <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-neutral-500">
-                Payments · Enterprise Technical Advisory · Applied AI
+                {siteProfile.focusLine}
               </p>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Dean Reese</h1>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{siteProfile.name}</h1>
               <p className="mt-2 text-lg font-medium text-neutral-800">
-                Technical Account Manager at Stripe
+                {siteProfile.headline}
               </p>
-              <p className="mt-1 text-sm text-neutral-600">
-                Media, Entertainment, Gaming &amp; Sports (MEGS)
-              </p>
+              <p className="mt-1 text-sm text-neutral-600">{siteProfile.segment}</p>
             </div>
-            <p className="text-lg leading-7 text-neutral-800">
-              I help enterprise teams navigate complex payments technology, solve technical
-              challenges, and turn new opportunities into practical outcomes. Outside Stripe,
-              I build AI-enabled products and digital services through Home Based Daddy, LLC.
-            </p>
+            <p className="text-lg leading-7 text-neutral-800">{siteProfile.introduction}</p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link href="/work" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white">
                 Explore my work
@@ -31,14 +28,14 @@ export default function HomePage() {
               <Link href="/resume" className="rounded-lg border border-neutral-300 px-4 py-2 text-sm text-neutral-900">
                 Resume
               </Link>
-              <a href="https://www.linkedin.com/in/dean-reese" target="_blank" rel="noreferrer"
+              <a href={siteProfile.linkedinUrl} target="_blank" rel="noreferrer"
                 className="rounded-lg border border-neutral-300 px-4 py-2 text-sm text-neutral-900">
                 LinkedIn
               </a>
             </div>
           </div>
           <div className="flex justify-start md:justify-end">
-            <img src="/DR.jpg" alt="Dean Reese"
+            <img src="/DR.jpg" alt={siteProfile.name}
               className="h-28 w-28 rounded-full border border-neutral-200 object-cover" />
           </div>
         </div>
@@ -47,14 +44,9 @@ export default function HomePage() {
       <section className="mt-12">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Selected work</h2>
         <div className="mt-4 grid gap-3">
-          <WorkItem title="Stripe · Technical Account Manager"
-            desc="Technical advisory and customer partnerships in the Media, Entertainment, Gaming & Sports segment, since May 2026." />
-          <WorkItem title="Home Based Daddy · Founder"
-            desc="Building and operating AI-enabled software, automation, and digital services across a growing portfolio of ventures." />
-          <WorkItem title="Paymentus · Banking & Fintech Delivery"
-            desc="Enterprise delivery across bill pay, loan payments, account-to-account transfers, and digital money movement." />
-          <WorkItem title="KlariVis · Client Success & Enablement"
-            desc="Led delivery and enablement for 40+ banks and credit unions; built scalable knowledge and training systems." />
+          {featured.map((role) => (
+            <WorkItem key={role.company} title={role.featuredTitle!} desc={role.featuredDescription!} />
+          ))}
         </div>
         <Link href="/work" className="mt-4 inline-block text-sm underline">See all experience</Link>
       </section>
@@ -63,13 +55,21 @@ export default function HomePage() {
         <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
           Building beyond the day job
         </h2>
-        <p className="mt-4 leading-7 text-neutral-700">
-          I founded Home Based Daddy, LLC to build practical products and services,
-          including BillFound, Kueola, Sunny Texts, and HBD WebCare. The work spans
-          software delivery, AI-powered workflows, customer experience, and business operations.
-        </p>
-        <a href="https://homebaseddaddy.com/" target="_blank" rel="noreferrer"
-          className="mt-3 inline-block text-sm underline">Explore Home Based Daddy</a>
+        <p className="mt-4 leading-7 text-neutral-700">{siteProfile.founderOverview}</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {ventures.map((venture) => (
+            <div key={venture.name} className="rounded-xl border border-neutral-200 p-4">
+              <div className="text-sm font-semibold">{venture.name}</div>
+              <p className="mt-1 text-sm leading-6 text-neutral-700">{venture.description}</p>
+              {"url" in venture && venture.url ? (
+                <a href={venture.url} target="_blank" rel="noreferrer"
+                  className="mt-2 inline-block text-sm underline">Learn more</a>
+              ) : null}
+            </div>
+          ))}
+        </div>
+        <a href={siteProfile.portfolioUrl} target="_blank" rel="noreferrer"
+          className="mt-4 inline-block text-sm underline">Explore Home Based Daddy</a>
       </section>
 
       <section className="mt-12">
@@ -77,30 +77,22 @@ export default function HomePage() {
           Areas of focus
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <Proof title="Payments & integrations"
-            body="Technical advisory, payment flows, implementation readiness, and troubleshooting across complex systems." />
-          <Proof title="Enterprise relationships"
-            body="Cross-functional coordination, executive communication, escalations, and durable operational improvements." />
-          <Proof title="Applied AI"
-            body="Hands-on AI products, workflow automation, knowledge systems, and responsible deployment." />
+          {focusAreas.map((focus) => (
+            <Proof key={focus.title} title={focus.title} body={focus.description} />
+          ))}
         </div>
       </section>
 
       <section className="mt-12">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Ask about my work</h2>
-        <p className="mt-3 text-neutral-700">
-          The Q&amp;A assistant answers questions from approved information about my experience
-          and projects. It will say when something is not documented.
-        </p>
+        <p className="mt-3 text-neutral-700">{siteProfile.chatbotDescription}</p>
         <Link href="/chat" className="mt-3 inline-block text-sm underline">Try the Q&amp;A assistant</Link>
       </section>
 
       <section className="mt-12">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Contact</h2>
-        <p className="mt-3 text-neutral-700">
-          For professional conversations, connect with me on LinkedIn.
-        </p>
-        <a href="https://www.linkedin.com/in/dean-reese" target="_blank" rel="noreferrer"
+        <p className="mt-3 text-neutral-700">{siteProfile.contactText}</p>
+        <a href={siteProfile.linkedinUrl} target="_blank" rel="noreferrer"
           className="mt-3 inline-block text-sm underline">Connect on LinkedIn</a>
       </section>
     </Container>
