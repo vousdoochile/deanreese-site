@@ -132,6 +132,26 @@ export const ventures = [
 // Personal maker builds are separate from Home Based Daddy commercial ventures.
 export const makerProjects = [
   {
+    name: "Dean & Dana HQ Frame",
+    expandedName: "Private Household Dashboard & Kiosk",
+    category: "Personal systems-integration project",
+    status: "Working household system · November 2026",
+    description: "I turned an Android photo frame into a dedicated household dashboard that synchronizes calendars, shopping, shared lists, reminders, and animated art across the frame and paired phones. The physical frame now returns to HQ through a custom Android companion while shared household state runs on a private cloud service.",
+    technicalSummary: "Built around an M15R4/RK3326 frame running Android 8.1 (API 27) and Firefox, with a custom foreground recovery helper using Usage Access and a separately approved default-Home role. The Python/SQLite household service runs as an isolated Railway production service with a persistent 1 GB volume, Google Calendar role boundaries, one-use device pairing, and encrypted Cloudflare R2 backups.",
+    stack: ["Android 8.1 / RK3326", "Firefox", "Python + SQLite", "Railway + persistent volume", "Google Calendar API", "Cloudflare R2"],
+    verified: [
+      "Frame and paired phones share shopping and named-list state; real household calendar reads and a Dana-created airport-ride event were observed across Google Calendar and HQ",
+      "Custom kiosk helper reached healthy v2.0.3-home state with Firefox foreground, Usage Access active, HQ set as effective Home, and the recovery circuit clear",
+      "A normal Android restart and a screen sleep/wake cycle returned the physical frame to the paired HQ dashboard without re-pairing",
+      "Railway production is live with one replica, a dedicated 1 GB /data volume and /healthz monitoring; encrypted R2 backups have been observed uploading and verifying successfully on successive days"
+    ],
+    planned: "Automatic browser-chrome-free fullscreen and frozen/offline-tab detection are not implemented. A post-USB overnight soak is not claimed, and direct retailer/cart integrations remain exploratory rather than shipped.",
+    image: "/dean-dana-hq-frame.webp",
+    imageAlt: "Stylized Dean and Dana HQ digital frame showing the Rainy Lantern Street animated household dashboard scene",
+    imageCaption: "Personal systems integration / working household system",
+    writingSlug: "dean-dana-hq-frame-engineering"
+  },
+  {
     name: "SH-3PB",
     expandedName: "Severed Head 3 Popcorn Bucket",
     category: "Personal maker project",
@@ -148,6 +168,7 @@ export const makerProjects = [
     planned: "Pickup activation using the onboard BMI270 IMU remains a proposed firmware enhancement. The original eye lights are manually controlled; no speech-synchronized lighting has been implemented.",
     image: "/sh3pb-protocol-droid.webp",
     imageAlt: "Weathered protocol droid head repurposed as a popcorn bucket, with both yellow eyes illuminated",
+    imageCaption: "Personal build / fan-made prototype",
     writingSlug: "sh3pb-protocol-droid-ai-build"
   }
 ] as const;
