@@ -3,6 +3,15 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { writingPosts, orderedWritingPosts } from "../../../content/writing";
 
+// Preserve simple inline emphasis in article prose without treating stored content as HTML.
+function renderArticleText(text: string) {
+  return text.split(/(\\*[^*]+\\*)/g).map((part, index) =>
+    part.startsWith("*") && part.endsWith("*") && part.length > 2
+      ? <em key={index}>{part.slice(1, -1)}</em>
+      : part
+  );
+}
+
 export function generateStaticParams() {
   return orderedWritingPosts.map((post) => ({ slug: post.slug }));
 }
@@ -46,13 +55,13 @@ export default function PostPage({ params }: { params: { slug: string } }) {
           paragraph.startsWith("## ") ? (
             <h2 className="article-section-title" key={index}>{paragraph.slice(3)}</h2>
           ) : (
-            <p key={index}>{paragraph}</p>
+            <p key={index}>{renderArticleText(paragraph)}</p>
           )
         )}
       </div>
       {post.references?.length ? (
         <section className="article-references">
-          <h2>Hardware and open-source references</h2>
+          <h2>Hardware and software</h2>
           <ul>{post.references.map((ref) => (
             <li key={ref.url}><a href={ref.url} target="_blank" rel="noreferrer">{ref.label} ↗</a></li>
           ))}</ul>
