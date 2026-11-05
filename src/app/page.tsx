@@ -32,7 +32,10 @@ export default function HomePage() {
             <p className="hero-mini">Technical Account Manager at Stripe <span aria-hidden="true">✦</span> Founder, Home Based Daddy, LLC <span aria-hidden="true">✦</span> AIGP</p>
           </div>
           <div className="portrait-frame">
-            <img src="/DR.jpg" alt="Portrait of Dean Reese" />
+            <picture>
+              <source media="(prefers-reduced-motion: reduce)" srcSet="/dean-reese-retro-still.webp" type="image/webp" />
+              <img src="/dean-reese-retro.gif" alt="Animated retro-futurist portrait of Dean Reese with pixel sunglasses dropping into place" width={439} height={437} decoding="async" />
+            </picture>
             <span className="portrait-label">Human behind the systems</span>
           </div>
         </div>
