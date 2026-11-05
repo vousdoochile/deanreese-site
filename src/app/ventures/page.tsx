@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MakerFeature from "../../components/MakerFeature";
 import { ventures, siteProfile } from "../../content/site";
 
 const themes = ["01 / OPERATIONS","02 / SOFTWARE","03 / HUMAN-CENTERED AI","04 / WEBCARE"];
@@ -37,6 +38,12 @@ export default function VenturesPage() {
           );
         })}
       </div>
+      <section className="maker-projects-section" aria-labelledby="maker-projects-heading">
+        <p className="section-eyebrow">PERSONAL MAKER LAB / SEPARATE FROM THE BUSINESS PORTFOLIO</p>
+        <h2 id="maker-projects-heading" className="section-title">Experiments worth building.</h2>
+        <p className="section-lede">Not every project needs to become a product. Sometimes the point is to test the boundaries between software, hardware and human interaction.</p>
+        <MakerFeature />
+      </section>
       <section style={{marginBottom:75}}>
         <div className="ask-band">
           <div>
