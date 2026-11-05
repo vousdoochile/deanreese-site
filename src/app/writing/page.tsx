@@ -7,7 +7,7 @@ export default function WritingPage() {
     <Container>
       <h1 className="text-2xl font-semibold tracking-tight">Writing</h1>
       <p className="mt-2 text-neutral-700">
-        Short writeups on delivery systems and applied AI in financial services.
+        Notes from hands-on builds, systems integration, technical delivery, and applied AI.
       </p>
       <div className="mt-10 space-y-4">
         {orderedWritingPosts.map((post) => (
