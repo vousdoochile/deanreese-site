@@ -129,6 +129,29 @@ export const ventures = [
   }
 ];
 
+// Personal maker builds are separate from Home Based Daddy commercial ventures.
+export const makerProjects = [
+  {
+    name: "SH-3PB",
+    expandedName: "Severed Head 3 Popcorn Bucket",
+    category: "Personal maker project",
+    status: "Working conversational prototype · October 2026",
+    description: "I turned a salvaged protocol-droid popcorn-bucket head into a working, voice-enabled AI character. The droid speaks with a distinct personality, carries on follow-up conversations, and has the electronics and power supply concealed inside the original shell.",
+    technicalSummary: "Integrated an M5Stack AtomS3R (ESP32-S3) with an Atomic Voice Base, 2.4 GHz Wi-Fi, XiaoZhi Lite's cloud conversation service, a custom character prompt, and a USB power bank. Reworked the existing neck opening for access to the physical talk button.",
+    stack: ["ESP32-S3 / AtomS3R", "Atomic Voice Base", "XiaoZhi Lite", "Wi-Fi audio", "USB power bank"],
+    verified: [
+      "Wi-Fi registration, on-device microphone and speaker, and two-way spoken conversation working",
+      "English-language voice and character behavior configured through XiaoZhi",
+      "Conversational follow-ups and an in-session reference to an earlier grocery-store discussion observed",
+      "Electronics installed and functioning inside the collectible head"
+    ],
+    planned: "Pickup activation using the onboard BMI270 IMU remains a proposed firmware enhancement. The original eye lights are manually controlled; no speech-synchronized lighting has been implemented.",
+    image: "/sh3pb-protocol-droid.webp",
+    imageAlt: "Weathered protocol droid head repurposed as a popcorn bucket, with both yellow eyes illuminated",
+    writingSlug: "sh3pb-protocol-droid-ai-build"
+  }
+] as const;
+
 export const focusAreas = [
   {
     "title": "Payments & integrations",

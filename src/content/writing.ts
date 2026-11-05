@@ -6,9 +6,97 @@ export type WritingPost = {
   summary: string;
   bullets: string[];
   body: string;
+  coverImage?: string;
+  coverAlt?: string;
+  coverCaption?: string;
+  references?: { label: string; url: string }[];
 };
 
 export const writingPosts: Record<string, WritingPost> = {
+  "sh3pb-protocol-droid-ai-build": {
+    title: "SH-3PB: I gave a popcorn bucket a voice",
+    date: "November 5, 2026",
+    summary: "How I integrated an ESP32-S3 voice kit, cloud conversational AI, a custom character, and portable power into a salvaged protocol-droid popcorn bucket, without pretending I wrote the voice engine.",
+    bullets: [
+      "Integrated an M5Stack AtomS3R (ESP32-S3) and Atomic Voice Base inside a salvaged protocol-droid popcorn-bucket head.",
+      "Used existing XiaoZhi firmware and XiaoZhi Lite for cloud conversations, then tuned an English voice and a character specification to make the droid distinctive.",
+      "Validated spoken follow-up questions and short-session conversational context, including an unscripted callback to an earlier grocery-store exchange.",
+      "Adapted the original neck opening for access to the physical talk control and powered the concealed electronics through an always-on USB battery.",
+      "Kept IMU-based pickup activation and animated lighting as future work rather than claiming they were shipped."
+    ],
+    coverImage: "/sh3pb-protocol-droid.webp",
+    coverAlt: "Weathered protocol-droid popcorn-bucket head with glowing amber-yellow eyes",
+    coverCaption: "SH-3PB, the completed voice-enabled prototype. The original yellow eye lights remain manually operated.",
+    references: [
+      { label: "M5Stack AtomS3R hardware", url: "https://docs.m5stack.com/en/core/AtomS3R" },
+      { label: "M5Stack XiaoZhi voice-assistant guide", url: "https://docs.m5stack.com/en/guide/atomic_voice_base/xiaozhi_voice_assistant" },
+      { label: "XiaoZhi ESP32 open-source project", url: "https://github.com/78/xiaozhi-esp32" }
+    ],
+    body: `I wanted a severed Star Wars droid head to talk back to me. It had already been turned into a popcorn bucket, which seemed like something he would have opinions about.
+
+I wanted an actual conversation, with follow-up questions and a character who could keep up. And I wanted him to be deeply, perpetually offended by what had happened to him.
+
+Meet SH-3PB, short for Severed Head 3 Popcorn Bucket. He's built around an M5Stack AtomS3R and Atomic Voice Base, with XiaoZhi Lite handling the conversation. Everything fits inside the original head. He can talk, follow a conversation, and complain about his missing body.
+
+## Getting the hardware right
+
+The head already had a lot going for it: a metal-look shell, glowing yellow eyes, and an opening at the neck. I wanted to keep those intact and fit the electronics around them.
+
+The practical questions were straightforward. Would the microphone hear me through the shell? Could I hear the speaker? How would I reach the talk button? And could I do all of this without running another home server or Raspberry Pi?
+
+After looking at a few options, including AiPi-Lite and a separate microphone-and-backend setup, I chose the M5Stack AtomS3R AI Chatbot Kit, model K147.
+
+The kit includes two parts. The AtomS3R supplies the ESP32-S3 controller, screen/button, and BMI270 motion sensor. The Atomic Voice Base adds the microphone, audio codec, and speaker. That distinction matters if you're buying parts: the controller alone doesn't give you the audio hardware.
+
+## Using what was already there
+
+My first plan involved building a voice bridge and possibly hosting it on Railway. Then I looked at everything that would require: streaming audio, speech recognition, voice synthesis, conversation state, credentials, and recovery when something broke.
+
+The kit already had XiaoZhi firmware. I connected it to 2.4 GHz Wi-Fi, paired it with a XiaoZhi agent, and set up an English voice and character. That got me to the part I actually wanted to work on much faster.
+
+The AtomS3R records and plays audio. The cloud service handles the conversation. I didn't build the speech engine or language model, and neither runs locally in the head. My work was bringing the hardware, enclosure, and character together.
+
+It needs Wi-Fi and the third-party voice service to work. It doesn't need a separate OpenAI API key or a computer running alongside it, but I wouldn't use it for confidential conversations.
+
+## Teaching him what happened to his body
+
+Getting him to speak was easier than getting him to be interesting.
+
+I wrote a character specification with his backstory, tone, examples, and a rule that every reply should find a fresh way to complain about his missing anatomy. The challenge was keeping that funny without getting the same line back every time.
+
+One early instruction caused a surprisingly specific problem. I described him as a severed head inside a popcorn bucket. He started talking as if he were trapped in a container.
+
+But his head *is* the popcorn bucket. Someone had turned his actual head into a snack container. That is a different grievance.
+
+I rewrote the description to make that clear. I also adjusted the sample lines so they were examples of his voice rather than things to repeat. The role editor's 2,000-token limit helped me cut the instructions down to what mattered.
+
+Then he started doing the thing I'd hoped for. After we talked about going to the grocery store, he brought it up again and warned me about the frozen aisle. In another exchange, he objected to the bargain bin and preferred a shopping cart.
+
+Those were callbacks during short conversations, not evidence of long-term memory. But they made him feel like a character who was listening and responding. I hadn't scripted those replies.
+
+## Fitting everything inside the head
+
+A small board still needs somewhere sensible to go. The microphone and speaker need a clear path for sound, the USB cable needs room and strain relief, and the button needs to stay reachable.
+
+I removed the original insert at the neck and positioned the AtomS3R so I could reach its screen/button from underneath. The electronics stayed hidden, and I didn't have to cut a new opening in the face.
+
+I tested it inside the head rather than assuming that working on the desk was good enough. For my setup, I ended up with the speaker volume at 98%. The original yellow eyes still use their factory controls; they aren't connected to the AI.
+
+The kit also needs USB power. I put an always-on USB power bank inside the shell so I could move the head around without a cable running to the wall.
+
+That doesn't make it a finished portable appliance. The screen and Wi-Fi still draw power while it's idle, and I haven't measured battery life or built a custom sleep mode. For now, I turn it off through the power bank or disconnect the cable.
+
+## What works, and what I want to try next
+
+SH-3PB works inside the head, on Wi-Fi and battery power. I can press the button underneath, talk to him, and ask follow-up questions. He has a distinct voice and plenty to say about the torso situation.
+
+Next, I'd like to use the onboard motion sensor to start a conversation when someone deliberately picks him up. That would mean changing the firmware and making sure a bump on the table doesn't count. It's an idea for the next version, not a feature he has today. Animated eyes or a speaking-mouth light are possibilities too.
+
+Most of the work in this build was in the details: choosing parts that worked together, fitting them into an existing object, getting the audio usable, and rewriting the character until he stopped misunderstanding his own predicament.
+
+And yes, the droid is still missing his body. He has made it abundantly clear that restoring his voice was an offensively incomplete repair.`
+  },
+
   "klarivis-knowledge-base-ai": {
     title: "Authoring and Scaling KlariVis’s First Enterprise Knowledge Base with AI Integration",
     date: "April 15, 2024",
@@ -75,6 +163,7 @@ This project highlighted the power of applied AI in payments and analytics: by c
 }
 
 export const writingOrder = [
+  "sh3pb-protocol-droid-ai-build",
   "klarivis-knowledge-base-ai",
   "deposit-forecasting-householding",
   "profitability-calculator",
