@@ -1,5 +1,5 @@
 import {
-  siteProfile, experiences, ventures, focusAreas, resumeHighlights, education, certifications,
+  siteProfile, experiences, ventures, makerProjects, focusAreas, resumeHighlights, education, certifications,
 } from "../content/site";
 import { orderedWritingPosts } from "../content/writing";
 
@@ -35,6 +35,21 @@ export const SITE_CONTENT = [
       `Product: ${venture.name}`,
       `Description: ${venture.description}`,
       ...("url" in venture && venture.url ? [`URL: ${venture.url}`] : []),
+    ].join("\n")),
+  ].join("\n\n"),
+  [
+    "PERSONAL MAKER PROJECTS (distinct from commercial ventures)",
+    ...makerProjects.map((project) => [
+      `Name: ${project.name} (${project.expandedName})`,
+      `Category: ${project.category}`,
+      `Status: ${project.status}`,
+      `Purpose and outcome: ${project.description}`,
+      `Architecture: ${project.technicalSummary}`,
+      `Stack: ${project.stack.join(", ")}`,
+      "Verified results:",
+      ...project.verified.map((item) => `- ${item}`),
+      `Not implemented: ${project.planned}`,
+      `Public write-up: https://deanreese.me/writing/${project.writingSlug}`,
     ].join("\n")),
   ].join("\n\n"),
   [
