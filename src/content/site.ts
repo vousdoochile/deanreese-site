@@ -132,6 +132,27 @@ export const ventures = [
 // Personal maker builds are separate from Home Based Daddy commercial ventures.
 export const makerProjects = [
   {
+    name: "unDEANiable Engine",
+    expandedName: "Ophanim Voice & Focus Companion",
+    category: "Personal applied-AI engineering project",
+    status: "Working cloud and iPhone voice prototype · November 2026",
+    description: "I wanted more than a chatbot window: a voice-first companion that helps me choose meaningful work, protect focus, capture competing ideas and reflect on what I actually finished. unDEANiable pairs a speaking AI with an animated, many-eyed Ophanim entity and a deliberately small set of human-controlled actions.",
+    technicalSummary: "Built a responsive browser app with JavaScript, SVG/CSS and WebRTC; GPT-Live 1 for spoken conversation, GPT-6 Luna through the Decisions API for bounded attention checkpoints, and the Responses API for short coaching plans. The private Node-compatible service runs as a Railway Bun Function with HTTPS, password-backed signed sessions and JSON state on a persistent 512 MB volume. A prompt-generated Ophanim voice has been created and saved for future GPT-Live sessions.",
+    stack: ["JavaScript + SVG/CSS", "Browser WebRTC", "GPT-Live 1", "GPT-6 Luna / Decisions + Responses", "Railway Bun Function", "Persistent JSON state"],
+    verified: [
+      "Private web application loads on desktop and iPhone; authenticated Railway requests and a live GPT-Live session creation succeeded, and spoken AI replies were heard on iPhone",
+      "The browser captures microphone audio only in opted-in sessions, exchanges WebRTC session descriptions via the server, and plays returned audio on a browser media track",
+      "Focus timer, idea vault, self-reported session records, coaching plans and bounded Decisions checkpoints are implemented; synced state uses a revision check to reject conflicting writes",
+      "The app's Ophanim has three independently animated eye-lined rings, a central eye, hover motion and application-state reactions, with a reduced-motion alternative",
+      "Railway logs confirm creation and persistence of an original prompt-generated voice; playback of that specific newly generated voice has not yet been independently verified"
+    ],
+    planned: "The entity does not watch the screen, monitor work in the background, control other apps or possess autonomous long-term memory. The custom voice needs a listening review, Mac Safari live playback remains unresolved, and richer speech-synchronized animation or a native floating desktop companion are future experiments.",
+    image: "/undeaniable-ophanim.svg",
+    imageAlt: "Original unDEANiable app emblem: a luminous central eye inside intersecting violet, blue and lime rings",
+    imageCaption: "Original Ophanim emblem from the working app / static identity asset",
+    writingSlug: "undeaniable-engine-voice-first-ophanim"
+  },
+  {
     name: "Dean & Dana HQ Frame",
     expandedName: "Private Household Dashboard & Kiosk",
     category: "Personal systems-integration project",
