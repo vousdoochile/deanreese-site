@@ -5,7 +5,7 @@ import { writingPosts, orderedWritingPosts } from "../../../content/writing";
 
 // Preserve simple inline emphasis in article prose without treating stored content as HTML.
 function renderArticleText(text: string) {
-  return text.split(/(\\*[^*]+\\*)/g).map((part, index) =>
+  return text.split(/(\*[^*]+\*)/g).map((part, index) =>
     part.startsWith("*") && part.endsWith("*") && part.length > 2
       ? <em key={index}>{part.slice(1, -1)}</em>
       : part
