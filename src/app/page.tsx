@@ -1,118 +1,145 @@
-import Container from "../components/Container";
 import Link from "next/link";
-import { siteProfile, experiences, ventures, focusAreas } from "../content/site";
+import { siteProfile, ventures, experiences, focusAreas } from "../content/site";
+import { orderedWritingPosts } from "../content/writing";
 
-const featured = experiences.filter((role) => role.featuredTitle && role.featuredDescription);
+const spotlight = [
+  experiences.find((e) => e.company === "Stripe"),
+  experiences.find((e) => e.company === "Home Based Daddy, LLC"),
+  experiences.find((e) => e.company === "Paymentus"),
+  experiences.find((e) => e.company === "KlariVis"),
+].filter(Boolean);
+
+const visualTags = ["01 / SOFTWARE", "02 / OPERATIONS", "03 / HUMAN-CENTERED AI", "04 / DIGITAL SERVICES"];
 
 export default function HomePage() {
   return (
-    <Container>
-      <section className="mt-2">
-        <div className="grid items-start gap-8 md:grid-cols-[1fr_auto]">
-          <div className="space-y-4">
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-neutral-500">
-                {siteProfile.focusLine}
-              </p>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{siteProfile.name}</h1>
-              <p className="mt-2 text-lg font-medium text-neutral-800">
-                {siteProfile.headline}
-              </p>
-              <p className="mt-1 text-sm text-neutral-600">{siteProfile.segment}</p>
+    <div className="retro-home">
+      <section className="hero-shell">
+        <div aria-hidden="true" className="orbit-sun" />
+        <div aria-hidden="true" className="orbit-line" />
+        <div aria-hidden="true" className="orbit-line second" />
+        <div aria-hidden="true" className="hero-gridline" />
+        <div aria-hidden="true" className="horizon" />
+        <div className="container-wide hero-content">
+          <div>
+            <div className="hero-kicker"><span className="signal-dot" /> TECH BY DAY. BUILDER BY NATURE.</div>
+            <h1 className="hero-title">The future<br /><em>should be</em><br /><strong>useful.</strong></h1>
+            <p className="hero-description">I&apos;m Dean. I help ambitious teams solve complex technology problems, and I build practical AI products of my own.</p>
+            <div className="hero-ctas">
+              <Link className="button-neo primary" href="/ventures">See what I&apos;m building <span aria-hidden="true">↗</span></Link>
+              <Link className="button-neo secondary" href="/resume">The professional side <span aria-hidden="true">↗</span></Link>
             </div>
-            <p className="text-lg leading-7 text-neutral-800">{siteProfile.introduction}</p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/work" className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white">
-                Explore my work
-              </Link>
-              <Link href="/resume" className="rounded-lg border border-neutral-300 px-4 py-2 text-sm text-neutral-900">
-                Resume
-              </Link>
-              <a href={siteProfile.linkedinUrl} target="_blank" rel="noreferrer"
-                className="rounded-lg border border-neutral-300 px-4 py-2 text-sm text-neutral-900">
-                LinkedIn
+            <p className="hero-mini">Technical Account Manager at Stripe <span aria-hidden="true">✦</span> Founder, Home Based Daddy, LLC <span aria-hidden="true">✦</span> AIGP</p>
+          </div>
+          <div className="portrait-frame">
+            <img src="/DR.jpg" alt="Portrait of Dean Reese" />
+            <span className="portrait-label">Human behind the systems</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="retro-section container-wide" id="projects">
+        <div className="section-heading-row">
+          <div>
+            <p className="section-eyebrow">01 / AFTER HOURS</p>
+            <h2 className="section-title">Ideas that escape<br />the notes app.</h2>
+            <p className="section-lede">Home Based Daddy is where I turn curiosity into useful products. Some are live, some are growing, and all are built around real problems.</p>
+          </div>
+          <Link className="text-link" href="/ventures">All projects ↗</Link>
+        </div>
+        <div className="venture-grid">
+          {ventures.map((v, i) => {
+            const href = "url" in v && v.url ? v.url : "/ventures";
+            const external = href.startsWith("http");
+            return (
+              <a className="venture-card" href={href} key={v.name} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
+                <div className={"venture-art variant-" + (i % 4)}>
+                  <span className="venture-art-small">{visualTags[i] || "INDEPENDENT PROJECT"}</span>
+                  <span className="venture-art-name">{v.name}</span>
+                </div>
+                <div className="venture-body">
+                  <p className="venture-meta">Home Based Daddy / Selected project</p>
+                  <h3 className="venture-name">{v.name}</h3>
+                  <p className="venture-desc">{v.description}</p>
+                  <span className="venture-open">{external ? "Visit project ↗" : "Explore portfolio ↗"}</span>
+                </div>
               </a>
+            );
+          })}
+        </div>
+        <a href={siteProfile.portfolioUrl} className="text-link" style={{display:"inline-block",marginTop:26}} target="_blank" rel="noreferrer">More from Home Based Daddy ↗</a>
+      </section>
+
+      <section className="retro-section proof-section">
+        <div className="container-wide">
+          <div className="section-heading-row">
+            <div>
+              <p className="section-eyebrow" style={{color:"#6ff0db"}}>02 / THE PROFESSIONAL SIDE</p>
+              <h2 className="section-title">Built in the real world.<br />Not just in theory.</h2>
+              <p className="section-lede">Enterprise technology, payment infrastructure, customer partnerships, and the hard work of getting complicated systems to deliver value.</p>
             </div>
+            <Link className="text-link" href="/work" style={{color:"#6ff0db"}}>Full experience ↗</Link>
           </div>
-          <div className="flex justify-start md:justify-end">
-            <img src="/DR.jpg" alt={siteProfile.name}
-              className="h-28 w-28 rounded-full border border-neutral-200 object-cover" />
+          <div>
+            {spotlight.map((item, i) => item ? (
+              <div className="role-row" key={item.company}>
+                <div className="role-number">0{i + 1} / {item.dates}</div>
+                <div>
+                  <div className="role-title">{item.featuredTitle || item.company}</div>
+                  <p className="role-desc">{item.featuredDescription || item.bullets[0]}</p>
+                </div>
+              </div>
+            ) : null)}
           </div>
+          <p style={{fontSize:12,color:"#aabbd3",marginTop:26}}>Experience and independent projects are distinct. Everything on this site represents my own work and views.</p>
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Selected work</h2>
-        <div className="mt-4 grid gap-3">
-          {featured.map((role) => (
-            <WorkItem key={role.company} title={role.featuredTitle!} desc={role.featuredDescription!} />
-          ))}
-        </div>
-        <Link href="/work" className="mt-4 inline-block text-sm underline">See all experience</Link>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
-          Building beyond the day job
-        </h2>
-        <p className="mt-4 leading-7 text-neutral-700">{siteProfile.founderOverview}</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {ventures.map((venture) => (
-            <div key={venture.name} className="rounded-xl border border-neutral-200 p-4">
-              <div className="text-sm font-semibold">{venture.name}</div>
-              <p className="mt-1 text-sm leading-6 text-neutral-700">{venture.description}</p>
-              {"url" in venture && venture.url ? (
-                <a href={venture.url} target="_blank" rel="noreferrer"
-                  className="mt-2 inline-block text-sm underline">Learn more</a>
-              ) : null}
+      <section className="retro-section container-wide">
+        <p className="section-eyebrow">03 / HOW I THINK</p>
+        <h2 className="section-title">Curiosity, meet follow-through.</h2>
+        <p className="section-lede">I like work that combines technical detail with a human reason for doing it.</p>
+        <div className="focus-grid">
+          {focusAreas.map((f,i) => (
+            <div className="focus-tile" key={f.title}>
+              <div className="focus-icon" aria-hidden="true">{["✳","◇","✦"][i] || "✳"}</div>
+              <h3>{f.title}</h3>
+              <p>{f.description}</p>
             </div>
           ))}
         </div>
-        <a href={siteProfile.portfolioUrl} target="_blank" rel="noreferrer"
-          className="mt-4 inline-block text-sm underline">Explore Home Based Daddy</a>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
-          Areas of focus
-        </h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          {focusAreas.map((focus) => (
-            <Proof key={focus.title} title={focus.title} body={focus.description} />
+      <section className="retro-section container-wide" style={{paddingTop:15}}>
+        <div className="section-heading-row">
+          <div>
+            <p className="section-eyebrow">04 / IDEAS, WRITTEN DOWN</p>
+            <h2 className="section-title">Notes from the build.</h2>
+          </div>
+          <Link className="text-link" href="/writing">More writing ↗</Link>
+        </div>
+        <div className="writing-list">
+          {orderedWritingPosts.slice(0,2).map((post) => (
+            <Link href={"/writing/" + post.slug} className="writing-teaser" key={post.slug}>
+              <div className="venture-meta">{post.date} · Practical notes</div>
+              <h3>{post.title}</h3>
+              <p>{post.summary}</p>
+              <span className="venture-open">Read the story ↗</span>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Ask about my work</h2>
-        <p className="mt-3 text-neutral-700">{siteProfile.chatbotDescription}</p>
-        <Link href="/chat" className="mt-3 inline-block text-sm underline">Try the Q&amp;A assistant</Link>
+      <section className="container-wide" style={{paddingBottom:100}}>
+        <div className="ask-band">
+          <div>
+            <p className="hero-kicker" style={{marginBottom:12}}>A LITTLE EXPERIMENT</p>
+            <h2>Ask my AI alter ego.</h2>
+            <p>Curious about my projects, career, or approach to AI? Ask Dean answers from my published work, not made-up achievements.</p>
+          </div>
+          <Link href="/chat" className="button-neo primary">Ask Dean <span aria-hidden="true">↗</span></Link>
+        </div>
       </section>
-
-      <section className="mt-12">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Contact</h2>
-        <p className="mt-3 text-neutral-700">{siteProfile.contactText}</p>
-        <a href={siteProfile.linkedinUrl} target="_blank" rel="noreferrer"
-          className="mt-3 inline-block text-sm underline">Connect on LinkedIn</a>
-      </section>
-    </Container>
-  );
-}
-
-function WorkItem({ title, desc }: { title: string; desc: string }) {
-  return (
-    <div className="rounded-xl border border-neutral-200 p-4">
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-1 text-sm leading-6 text-neutral-700">{desc}</div>
-    </div>
-  );
-}
-
-function Proof({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="rounded-xl border border-neutral-200 p-4">
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-1 text-sm leading-6 text-neutral-700">{body}</div>
     </div>
   );
 }

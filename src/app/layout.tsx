@@ -6,15 +6,15 @@ import Footer from "../components/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://deanreese.me"),
   title: {
-    default: "Dean Reese | Technical Account Manager at Stripe",
+    default: "Dean Reese | Applied AI, Technology & Building What's Next",
     template: "%s | Dean Reese",
   },
   description:
-    "Dean Reese is a Technical Account Manager at Stripe supporting MEGS customers, with experience across enterprise payments, technical delivery, and applied AI products.",
+    "Dean Reese is a Technical Account Manager at Stripe and the founder of Home Based Daddy, LLC. Explore his experience, independent products, and practical AI projects.",
   openGraph: {
-    title: "Dean Reese | Technical Account Manager at Stripe",
+    title: "Dean Reese | The Future Should Be Useful",
     description:
-      "Enterprise technical advisory, payments, and applied AI. Explore Dean's experience at Stripe and the products built through Home Based Daddy.",
+      "Enterprise technical advisory by day. Independent AI and software building after hours. Explore selected work, projects and writing.",
     url: "https://deanreese.me",
     type: "website",
   },
@@ -23,9 +23,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-white text-neutral-900 antialiased">
+      <body className="site-body antialiased">
+        <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3">Skip to content</a>
         <Nav />
-        <main className="py-10">{children}</main>
+        <main id="content" className="site-main">{children}</main>
         <Footer />
       </body>
     </html>

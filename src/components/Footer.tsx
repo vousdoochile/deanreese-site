@@ -1,21 +1,30 @@
-import Container from "./Container";
+import Link from "next/link";
+import { siteProfile } from "../content/site";
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-neutral-200 py-10">
-      <Container>
-        <div className="text-sm text-neutral-600">
-          <div>Arlington, TN</div>
-          <div className="mt-2 flex flex-wrap gap-4">
-            <a className="underline" href="https://www.linkedin.com/in/dean-reese"
-              target="_blank" rel="noreferrer">LinkedIn</a>
-            <a className="underline" href="https://homebaseddaddy.com/"
-              target="_blank" rel="noreferrer">Home Based Daddy</a>
-            <a className="underline" href="https://sunnytexts.com"
-              target="_blank" rel="noreferrer">Sunny Texts</a>
+    <footer className="site-footer">
+      <div className="container-wide">
+        <div className="footer-top">
+          <div>
+            <div className="footer-mark">Dean Reese<span style={{color:"#6ff0db"}}>.</span></div>
+            <p className="footer-summary">Technology, AI and independent projects. I believe the best technology is the kind that makes real life a little better.</p>
+          </div>
+          <div className="footer-links">
+            <Link href="/work">Experience</Link>
+            <Link href="/ventures">Projects</Link>
+            <Link href="/writing">Writing</Link>
+            <Link href="/resume">Resume</Link>
+            <Link href="/chat">Ask Dean</Link>
+            <a href={siteProfile.linkedinUrl} target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://github.com/vousdoochile" target="_blank" rel="noreferrer">GitHub</a>
           </div>
         </div>
-      </Container>
+        <div className="footer-bottom">
+          <span>Based in Arlington, Tennessee · Always curious.</span>
+          <span>Independent projects and opinions are my own, not those of my employer.</span>
+        </div>
+      </div>
     </footer>
   );
 }
