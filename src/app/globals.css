@@ -159,3 +159,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
  html { scroll-behavior:auto; }
  *, *::before, *::after { transition:none!important; animation:none!important; }
 }
+
+/* Animated avatar: preserve the original photo in public/DR.jpg and respect reduced motion. */
+.portrait-frame picture { display: block; width: 100%; height: 100%; }
