@@ -14,7 +14,7 @@ export type WritingPost = {
 
 export const writingPosts: Record<string, WritingPost> = {
   "sh3pb-protocol-droid-ai-build": {
-    title: "Giving a Severed Droid Head a Voice: The SH-3PB Build",
+    title: "SH-3PB: I gave a popcorn bucket a voice",
     date: "November 5, 2026",
     summary: "How I integrated an ESP32-S3 voice kit, cloud conversational AI, a custom character, and portable power into a salvaged protocol-droid popcorn bucket, without pretending I wrote the voice engine.",
     bullets: [
@@ -32,55 +32,67 @@ export const writingPosts: Record<string, WritingPost> = {
       { label: "M5Stack XiaoZhi voice-assistant guide", url: "https://docs.m5stack.com/en/guide/atomic_voice_base/xiaozhi_voice_assistant" },
       { label: "XiaoZhi ESP32 open-source project", url: "https://github.com/78/xiaozhi-esp32" }
     ],
-    body: `I started with a ridiculous requirement: I wanted a salvaged Star Wars protocol-droid head to talk back to me. Not play three canned phrases, not hide a Bluetooth speaker behind the face, but actually carry on a conversation. And because the object is a severed head that was turned into a popcorn bucket, I wanted the character to be deeply, perpetually offended by that fact.
+    body: `I wanted a severed Star Wars droid head to talk back to me. It had already been turned into a popcorn bucket, which seemed like something he would have opinions about.
 
-What came out of it is SH-3PB, short for Severed Head 3 Popcorn Bucket. It is a working, voice-enabled physical character built around an M5Stack AtomS3R and Atomic Voice Base, with the conversational intelligence supplied by XiaoZhi Lite. The whole thing fits inside the original shell. This was an integration and prototyping project, not an attempt to claim an AI model or voice stack as my own.
+I wanted an actual conversation, with follow-up questions and a character who could keep up. And I wanted him to be deeply, perpetually offended by what had happened to him.
 
-## Start with the actual engineering constraints
+Meet SH-3PB, short for Severed Head 3 Popcorn Bucket. He's built around an M5Stack AtomS3R and Atomic Voice Base, with XiaoZhi Lite handling the conversation. Everything fits inside the original head. He can talk, follow a conversation, and complain about his missing body.
 
-The bucket was already a finished object. Its metal-look plastic shell, illuminated yellow eyes, neck opening, and existing mechanisms were worth preserving. The electronics had to fit inside, pick up speech, project a voice through plastic, and remain accessible for charging and conversation. I also wanted to avoid running yet another home server or Raspberry Pi just to make a novelty head talk.
+## Getting the hardware right
 
-I compared a few routes, including AiPi-Lite and a more elaborate microphone-plus-backend arrangement. The practical choice was M5Stack's AtomS3R AI Chatbot Kit, model K147. The AtomS3R provides the ESP32-S3 controller, screen/button and BMI270 inertial sensor; the included Atomic Voice Base provides the microphone, ES8311 audio codec and small speaker. Those are separate parts of one assembled kit. Buying the controller alone would not have solved the audio problem.
+The head already had a lot going for it: a metal-look shell, glowing yellow eyes, and an opening at the neck. I wanted to keep those intact and fit the electronics around them.
 
-## Use a maintained conversation stack, not a homegrown one for its own sake
+The practical questions were straightforward. Would the microphone hear me through the shell? Could I hear the speaker? How would I reach the talk button? And could I do all of this without running another home server or Raspberry Pi?
 
-My initial plan was to build a lightweight voice bridge and possibly host it on Railway. That would have meant handling audio streaming, speech recognition, synthesis, session state, credentials and failure recovery. A real engineering project, but unnecessary complexity for the first version.
+After looking at a few options, including AiPi-Lite and a separate microphone-and-backend setup, I chose the M5Stack AtomS3R AI Chatbot Kit, model K147.
 
-The kit arrived with XiaoZhi firmware capable of connecting to its service. I provisioned it onto 2.4 GHz Wi-Fi, paired the physical device to a XiaoZhi agent, and configured the English-language voice and role there. The AtomS3R captures and plays audio locally; the service handles the conversational AI. This isn't an on-device language model, and it doesn't require a separate OpenAI API key or a continuously running Mac, Clive, Sunny Home, or Railway service.
+The kit includes two parts. The AtomS3R supplies the ESP32-S3 controller, screen/button, and BMI270 motion sensor. The Atomic Voice Base adds the microphone, audio codec, and speaker. That distinction matters if you're buying parts: the controller alone doesn't give you the audio hardware.
 
-The division of responsibility matters: embedded hardware handles the physical interface, Wi-Fi handles transport, the voice platform supplies speech and conversation, and the role configuration defines the character. Keeping those boundaries clear made the build much simpler and easier to troubleshoot. It also means the droid depends on an internet connection and a third-party voice service; I wouldn't use it to discuss confidential work.
+## Using what was already there
 
-## The personality turned out to be a real design problem
+My first plan involved building a voice bridge and possibly hosting it on Railway. Then I looked at everything that would require: streaming audio, speech recognition, voice synthesis, conversation state, credentials, and recovery when something broke.
 
-Getting words out of the speaker was the easy part. Getting a character I actually wanted to talk to took iteration. I wrote a structured role specification with a backstory, tone, conversational constraints, examples and one nonnegotiable rule: every reply should find a fresh, natural way to complain about missing anatomy.
+The kit already had XiaoZhi firmware. I connected it to 2.4 GHz Wi-Fi, paired it with a XiaoZhi agent, and set up an English voice and character. That got me to the part I actually wanted to work on much faster.
 
-One early mistake was almost philosophical. I told the model it was a severed head inside a popcorn bucket. It started describing itself as trapped in the container. That was wrong. The head itself had been converted into the popcorn bucket. A single ambiguous sentence changed the whole character's worldview.
+The AtomS3R records and plays audio. The cloud service handles the conversation. I didn't build the speech engine or language model, and neither runs locally in the head. My work was bringing the hardware, enclosure, and character together.
 
-I rewrote the specification to make the physical identity explicit: this is its actual severed head, repurposed as a snack container, with its consciousness restored through new electronics. I also learned to use sample lines as style references, not scripts to recite. XiaoZhi's role editor imposed a 2,000-token limit, which forced me to tighten the instructions without losing the joke.
+It needs Wi-Fi and the third-party voice service to work. It doesn't need a separate OpenAI API key or a computer running alongside it, but I wouldn't use it for confidential conversations.
 
-The result was better than repeating a punchline. When I talked about taking SH-3PB to the grocery store, it later referred back to that exchange and warned me about the frozen aisle. In another exchange, it objected to being placed in the bargain bin and preferred a shopping cart. Those observations are from hands-on conversations, not a formal memory benchmark. They showed useful short-session continuity and the kind of improvisation I had hoped for.
+## Teaching him what happened to his body
 
-## Packaging a voice system inside a collectible
+Getting him to speak was easier than getting him to be interesting.
 
-A tiny board doesn't automatically make a good physical product. Placement is everything. The microphone needs to hear through the shell, the speaker needs an acoustic path, the USB cable needs strain relief, and the physical screen button needs to remain usable after installation.
+I wrote a character specification with his backstory, tone, examples, and a rule that every reply should find a fresh way to complain about his missing anatomy. The challenge was keeping that funny without getting the same line back every time.
 
-I took advantage of the existing opening at the bottom of the droid's neck. After removing the original insert, I positioned the AtomS3R so the screen/button could be accessed from below while the electronics remained inside the head. That avoided exposing a control on the face and spared the collectible an unnecessary new opening. I tested the assembled kit in the head, not just on the desk.
+One early instruction caused a surprisingly specific problem. I described him as a severed head inside a popcorn bucket. He started talking as if he were trapped in a container.
 
-Volume tuning mattered, too. On the built-in speaker, I landed at a 98% setting that worked for my setup. That is a practical user setting, not a measured sound-pressure or acoustic-performance claim. The original glowing eyes still run on their factory controls; I did not wire them to the AI.
+But his head *is* the popcorn bucket. Someone had turned his actual head into a snack container. That is a different grievance.
 
-## Power is part of the product, not an afterthought
+I rewrote the description to make that clear. I also adjusted the sample lines so they were examples of his voice rather than things to repeat. The role editor's 2,000-token limit helped me cut the instructions down to what mattered.
 
-The K147 kit has no rechargeable battery in its stock configuration. It needs USB power. To make the head movable rather than permanently tethered to a wall, I installed an always-on USB power bank inside the shell. That lets the electronics stay powered even when the voice service isn't actively responding.
+Then he started doing the thing I'd hoped for. After we talked about going to the grocery store, he brought it up again and warned me about the frozen aisle. In another exchange, he objected to the bargain bin and preferred a shopping cart.
 
-There is a tradeoff: an idle conversation is not the same thing as a sleeping microcontroller. The screen and Wi-Fi can keep drawing current. I can cut power using the bank's output controls or disconnect the cable. I haven't published battery-runtime measurements or implemented a custom low-power mode, so I won't pretend this is an optimized portable appliance.
+Those were callbacks during short conversations, not evidence of long-term memory. But they made him feel like a character who was listening and responding. I hadn't scripted those replies.
 
-## What works, and what comes next
+## Fitting everything inside the head
 
-Today SH-3PB talks, responds to follow-up questions, delivers a distinct character voice, and runs inside the physical head on its own Wi-Fi connection. He can be manually activated using the accessible screen/button. The recurring missing-torso complaints are, predictably, his strongest feature.
+A small board still needs somewhere sensible to go. The microphone and speaker need a clear path for sound, the USB cable needs room and strain relief, and the button needs to stay reachable.
 
-The next engineering idea is to use the onboard BMI270 accelerometer and gyroscope to recognize a deliberate pickup and call XiaoZhi's existing conversation-start behavior. The stock firmware uses the physical button; pickup activation would require a custom firmware build and careful filtering so bumps on a table don't wake the device. That feature has not been implemented yet. Animated eyes or a speaking-mouth LED are also possibilities, not completed work.
+I removed the original insert at the neck and positioned the AtomS3R so I could reach its screen/button from underneath. The electronics stayed hidden, and I didn't have to cut a new opening in the face.
 
-The lesson I take from this build is that practical AI work is often about the interfaces between systems. Selecting compatible hardware, respecting audio and power limitations, setting clear software boundaries, testing conversational behavior, and iterating on a compact character specification did more for the experience than reinventing the speech engine ever would have.
+I tested it inside the head rather than assuming that working on the desk was good enough. For my setup, I ended up with the speaker volume at 98%. The original yellow eyes still use their factory controls; they aren't connected to the AI.
+
+The kit also needs USB power. I put an always-on USB power bank inside the shell so I could move the head around without a cable running to the wall.
+
+That doesn't make it a finished portable appliance. The screen and Wi-Fi still draw power while it's idle, and I haven't measured battery life or built a custom sleep mode. For now, I turn it off through the power bank or disconnect the cable.
+
+## What works, and what I want to try next
+
+SH-3PB works inside the head, on Wi-Fi and battery power. I can press the button underneath, talk to him, and ask follow-up questions. He has a distinct voice and plenty to say about the torso situation.
+
+Next, I'd like to use the onboard motion sensor to start a conversation when someone deliberately picks him up. That would mean changing the firmware and making sure a bump on the table doesn't count. It's an idea for the next version, not a feature he has today. Animated eyes or a speaking-mouth light are possibilities too.
+
+Most of the work in this build was in the details: choosing parts that worked together, fitting them into an existing object, getting the audio usable, and rewriting the character until he stopped misunderstanding his own predicament.
 
 And yes, the droid is still missing his body. He has made it abundantly clear that restoring his voice was an offensively incomplete repair.`
   },
