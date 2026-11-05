@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MakerFeature from "../components/MakerFeature";
 import { siteProfile, ventures, experiences, focusAreas } from "../content/site";
 import { orderedWritingPosts } from "../content/writing";
 
@@ -70,6 +71,11 @@ export default function HomePage() {
             );
           })}
         </div>
+        <div className="maker-home-intro">
+          <p className="section-eyebrow">PERSONAL MAKER LAB / AFTER HOURS</p>
+          <h3 className="maker-home-title">When the prototype has a personality.</h3>
+        </div>
+        <MakerFeature />
         <a href={siteProfile.portfolioUrl} className="text-link" style={{display:"inline-block",marginTop:26}} target="_blank" rel="noreferrer">More from Home Based Daddy ↗</a>
       </section>
 
