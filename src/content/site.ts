@@ -144,9 +144,9 @@ export const makerProjects = [
       "The browser captures microphone audio only in opted-in sessions, exchanges WebRTC session descriptions via the server, and plays returned audio on a browser media track",
       "Focus timer, idea vault, self-reported session records, coaching plans and bounded Decisions checkpoints are implemented; synced state uses a revision check to reject conflicting writes",
       "The app's Ophanim has three independently animated eye-lined rings, a central eye, hover motion and application-state reactions, with a reduced-motion alternative",
-      "Railway logs confirm creation and persistence of an original prompt-generated voice; playback of that specific newly generated voice has not yet been independently verified"
+      "Railway logs confirm creation and persistence of the original prompt-generated voice; its initial listening review found a natural masculine sound, but not the distinctive Ophanim character intended"
     ],
-    planned: "The entity does not watch the screen, monitor work in the background, control other apps or possess autonomous long-term memory. The custom voice needs a listening review, Mac Safari live playback remains unresolved, and richer speech-synchronized animation or a native floating desktop companion are future experiments.",
+    planned: "The entity does not watch the screen, monitor work in the background, control other apps or possess autonomous long-term memory. The custom voice needs further design and listening comparisons, Mac Safari live playback remains unresolved, and richer speech-synchronized animation or a native floating desktop companion are future experiments.",
     image: "/undeaniable-ophanim.svg",
     imageAlt: "Original unDEANiable app emblem: a luminous central eye inside intersecting violet, blue and lime rings",
     imageCaption: "Original Ophanim emblem from the working app / static identity asset",
