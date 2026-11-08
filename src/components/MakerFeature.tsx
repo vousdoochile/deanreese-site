@@ -23,6 +23,9 @@ export default function MakerFeature() {
               {project.stack.map((item) => <span key={item}>{item}</span>)}
             </div>
             <p className="maker-feature-next"><strong>Next:</strong> {project.planned}</p>
+            {"url" in project && typeof project.url === "string" ? (
+              <a className="maker-story-link" href={project.url} target="_blank" rel="noreferrer">Play the live game ↗</a>
+            ) : null}
             <Link className="maker-story-link" href={`/writing/${project.writingSlug}`}>
               Read the technical build story ↗
             </Link>

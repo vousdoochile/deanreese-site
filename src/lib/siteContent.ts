@@ -42,6 +42,7 @@ export const SITE_CONTENT = [
     ...makerProjects.map((project) => [
       `Name: ${project.name} (${project.expandedName})`,
       `Category: ${project.category}`,
+      ...("url" in project && typeof project.url === "string" ? [`Live game: ${project.url}`] : []),
       `Status: ${project.status}`,
       `Purpose and outcome: ${project.description}`,
       `Architecture: ${project.technicalSummary}`,

@@ -132,6 +132,35 @@ export const ventures = [
 // Personal maker builds are separate from Home Based Daddy commercial ventures.
 export const makerProjects = [
   {
+    "name": "Dana’s Dog Dash",
+    "expandedName": "A Personalized Retro Browser Arcade",
+    "category": "Personal game-engineering project",
+    "status": "Live three-level browser game · November 2026",
+    "description": "I wanted to make Dana a game she would actually enjoy playing. Dana’s Dog Dash is a small, fully playable arcade maze starring her in a plaid bathrobe, Violet the muscular black troublemaker, and Buddy the long-legged master of Diaper Duty. Collect five Coke Zeros per level, avoid the dogs, and make it to the couch. The game is live, and Dana has played and enjoyed it.",
+    "technicalSummary": "Designed and iterated an offline-capable, single-file HTML/CSS/JavaScript game with an HTML5 Canvas rendering loop, grid-based movement and collision rules, animated custom sprites, level-aware heuristic dog behavior and explicit game states. Tunable chase and interception logic, a timed treat distraction, progressive difficulty and a third-level Zoomies phase drive the challenge. Browser Web Audio synthesizes an original looping new-wave soundtrack and game effects; an optional local MIDI parser keeps selected files on the player's device. Responsive keyboard and touch controls, local high-score persistence, and a static Vercel deployment complete the experience.",
+    "stack": [
+      "HTML5 Canvas + JavaScript",
+      "Grid-based gameplay + rule-based dog AI",
+      "Web Audio + local MIDI parsing",
+      "Custom sprite animation",
+      "Keyboard + mobile touch",
+      "Static Vercel hosting + HTTPS"
+    ],
+    "verified": [
+      "Three playable levels with five Coke Zero collectibles each, a couch objective, dog collisions, current-level restarts, pause, treats and unlimited retries",
+      "Violet and Buddy use distinct, adjustable movement behavior; Level 3 increases pursuit and interception pressure and triggers a Zoomies speed boost after three pickups",
+      "Original browser-synthesized music, sound effects, on/off controls and user-selected local MIDI playback implemented; no copyrighted Duran Duran recording is bundled",
+      "Browser-based gameplay and control checks completed for level progression, collisions and mobile layout; Dana confirmed the game worked and enjoyed playing it",
+      "Production deployment is READY on Vercel; danasdogdash.com and its www redirect were verified with DNS configuration and HTTPS certificates"
+    ],
+    "planned": "This is a finished personal game, not a commercial product or a live-service platform. Future levels, leaderboards, online accounts and licensed commercial music are not part of the current build.",
+    "image": "/danas-dog-dash-gameplay.webp",
+    "imageAlt": "Actual Dana’s Dog Dash gameplay showing Dana, Violet and Buddy navigating the purple-walled house maze with Coke Zero pickups, the couch goal and on-screen controls",
+    "imageCaption": "Actual gameplay screenshot from Maximum Chaos Edition · November 2026",
+    "url": "https://danasdogdash.com",
+    "writingSlug": "danas-dog-dash-building-a-retro-arcade-game"
+  },
+  {
     name: "unDEANiable Engine",
     expandedName: "Ophanim Voice & Focus Companion",
     category: "Personal applied-AI engineering project",
