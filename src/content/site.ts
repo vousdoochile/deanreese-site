@@ -154,9 +154,9 @@ export const makerProjects = [
       "Production deployment is READY on Vercel; danasdogdash.com and its www redirect were verified with DNS configuration and HTTPS certificates"
     ],
     "planned": "This is a finished personal game, not a commercial product or a live-service platform. Future levels, leaderboards, online accounts and licensed commercial music are not part of the current build.",
-    "image": "/danas-dog-dash-gameplay.webp",
-    "imageAlt": "Actual Dana’s Dog Dash gameplay showing Dana, Violet and Buddy navigating the purple-walled house maze with Coke Zero pickups, the couch goal and on-screen controls",
-    "imageCaption": "Actual gameplay screenshot from Maximum Chaos Edition · November 2026",
+    "image": "/danas-dog-dash-project-feature.jpg",
+    "imageAlt": "Dana’s Dog Dash start screen showing Dana between Violet and Buddy with the message 'The dogs are in the way. Again.'",
+    "imageCaption": "Dana’s Dog Dash title panel featuring Dana, Violet, Buddy, and the game’s three-level arcade setup.",
     "url": "https://danasdogdash.com",
     "writingSlug": "danas-dog-dash-building-a-retro-arcade-game"
   },
