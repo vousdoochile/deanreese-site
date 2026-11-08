@@ -12,7 +12,9 @@ export default function MakerFeature() {
         <article className="maker-feature" key={project.name}>
           <div className="maker-feature-image">
             <img src={project.image} alt={project.imageAlt} width={640} height={640} loading="lazy" />
-            <span className="maker-image-caption">{project.imageCaption}</span>
+            {project.imageCaption ? (
+              <span className="maker-image-caption">{project.imageCaption}</span>
+            ) : null}
           </div>
           <div className="maker-feature-copy">
             <p className="maker-eyebrow">{project.category} / {project.status}</p>
