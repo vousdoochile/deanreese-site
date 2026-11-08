@@ -156,7 +156,7 @@ export const makerProjects = [
     "planned": "This is a finished personal game, not a commercial product or a live-service platform. Future levels, leaderboards, online accounts and licensed commercial music are not part of the current build.",
     "image": "/danas-dog-dash-project-feature.jpg",
     "imageAlt": "Dana’s Dog Dash start screen showing Dana between Violet and Buddy with the message 'The dogs are in the way. Again.'",
-    "imageCaption": "Dana’s Dog Dash title panel featuring Dana, Violet, Buddy, and the game’s three-level arcade setup.",
+    "imageCaption": "",
     "url": "https://danasdogdash.com",
     "writingSlug": "danas-dog-dash-building-a-retro-arcade-game"
   },
