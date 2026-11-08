@@ -3,13 +3,24 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { writingPosts, orderedWritingPosts } from "../../../content/writing";
 
-// Preserve simple inline emphasis in article prose without treating stored content as HTML.
+// Render a limited subset of Markdown in approved article copy. Never inject raw HTML.
 function renderArticleText(text: string) {
-  return text.split(/(\*[^*]+\*)/g).map((part, index) =>
-    part.startsWith("*") && part.endsWith("*") && part.length > 2
-      ? <em key={index}>{part.slice(1, -1)}</em>
-      : part
-  );
+  return text.split(/(\[[^\]]+\]\(https?:\/\/[^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*|\x60[^\x60]+\x60)/g).map((part, index) => {
+    const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
+    if (link) {
+      return <a key={index} href={link[2]} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{link[1]}</a>;
+    }
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+      return <em key={index}>{part.slice(1, -1)}</em>;
+    }
+    if (part.charCodeAt(0) === 96 && part.charCodeAt(part.length - 1) === 96 && part.length > 2) {
+      return <code key={index} className="rounded bg-neutral-100 px-1 py-0.5">{part.slice(1, -1)}</code>;
+    }
+    return part;
+  });
 }
 
 export function generateStaticParams() {
@@ -54,6 +65,12 @@ export default function PostPage({ params }: { params: { slug: string } }) {
         {post.body.split("\n\n").map((paragraph, index) =>
           paragraph.startsWith("## ") ? (
             <h2 className="article-section-title" key={index}>{paragraph.slice(3)}</h2>
+          ) : paragraph.startsWith("- ") ? (
+            <ul key={index} className="list-disc space-y-1 pl-6">
+              {paragraph.split("\n").filter(Boolean).map((line, item) => (
+                <li key={item}>{renderArticleText(line.replace(/^- /, ""))}</li>
+              ))}
+            </ul>
           ) : (
             <p key={index}>{renderArticleText(paragraph)}</p>
           )
