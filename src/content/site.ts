@@ -132,6 +132,35 @@ export const ventures = [
 // Personal maker builds are separate from Home Based Daddy commercial ventures.
 export const makerProjects = [
   {
+    "name": "Clive 2.0",
+    "expandedName": "Reliable Mac Virtualization for an HBD OpenClaw Operator",
+    "category": "Personal systems engineering / applied AI operations",
+    "status": "Operational macOS VM · 250 GiB storage verified · November 2026",
+    "description": "Clive is my persistent macOS environment for Home Based Daddy's OpenClaw-based operations. The work wasn't inventing another agent framework. It was designing, migrating, protecting, and validating the infrastructure that lets an existing agent platform do useful work without putting the business at the mercy of one fragile virtual disk.",
+    "technicalSummary": "Engineered an Apple Silicon UTM/macOS guest on a Samsung T7 Shield, retaining a fixed 8 GiB RAM allocation and independent recovery copies. Verified the exact active VM and Apple Sparse Image Format (ASIF), cloned the image for an isolated resize trial, established the GPT/APFS/Recovery boundaries, and expanded the production ASIF disk from 150 to 250 GiB. Recovered 100 GiB of usable guest capacity with a live native APFS grow after FileVault prevented offline enlargement. Proved the result with filesystem checks and verified the OpenClaw gateway, messaging channels and cron inventory without modifying agent code or triggering outbound work.",
+    "stack": [
+      "Apple Silicon + UTM Apple Virtualization",
+      "macOS 26 + FileVault/APFS",
+      "ASIF sparse disk + GPT/Recovery",
+      "Samsung T7 Shield + independent VM backups",
+      "OpenClaw gateway + LaunchAgent",
+      "Read-only probes + controlled change gates"
+    ],
+    "verified": [
+      "Reidentified the active Samsung-hosted VM through UTM registration and the host virtualization process, avoiding a stale duplicate registration",
+      "Created a current full-VM Porsche recovery copy and passed a recursive file comparison before production changes",
+      "Used a separate APFS copy-on-write test image to verify 150-to-250 GiB ASIF growth and native Recovery partition relocation",
+      "Expanded the production guest's main APFS container from 155.2 GB to 262.5 GB; available guest storage rose from 26 GiB to 126 GiB",
+      "Live APFS filesystem verification returned exit code 0; FileVault remained enabled, RAM remained 8 GiB, and Recovery stayed present",
+      "OpenClaw gateway responded successfully, Telegram/Discord/Slack showed OK, and eight scheduled jobs remained listed; no upgrades or outbound validation messages were triggered"
+    ],
+    "planned": "The storage expansion is complete. Memory-file integrity and the full HBD STOP/approval/suppression rules still warrant separate read-only acceptance checks; a post-change reboot/restore drill has not been claimed. This is a privately operated environment, not a public hosted agent service.",
+    "image": "/clive-2-virtual-disk.svg",
+    "imageAlt": "Engineering diagram of Clive's Apple Silicon UTM environment and verified 250 GiB virtual disk, with APFS, Recovery and independent backup",
+    "imageCaption": "Original technical schematic of the verified disk layout, not a screenshot or an image of a live system",
+    "writingSlug": "clive-2-apple-silicon-virtual-disk-expansion"
+  },
+  {
     "name": "Dana’s Dog Dash",
     "expandedName": "A Personalized Retro Browser Arcade",
     "category": "Personal game-engineering project",
