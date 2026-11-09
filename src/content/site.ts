@@ -133,10 +133,10 @@ export const ventures = [
 export const makerProjects = [
   {
     "name": "Clive 2.0",
-    "expandedName": "Rehoming an HBD AI Operator on Apple Silicon",
+    "expandedName": "A Bigger Home for My AI Operator",
     "category": "Personal systems engineering / applied AI operations",
     "status": "Operational external-SSD macOS VM · 250 GiB verified · November 2026",
-    "description": "A 16 GB Mac mini with a 256 GB internal SSD was running out of room for Clive, my persistent OpenClaw-based HBD operator. I moved the existing UTM macOS machine to a Samsung external SSD, kept its identity and backups intact, and then enlarged its usable guest storage without reinstalling it. The project is about systems engineering and reliability, not inventing the underlying agent framework.",
+    "description": "A 16 GB Mac mini with a 256 GB internal SSD was running out of room for Clive, my persistent OpenClaw-based HBD operator. I moved the existing UTM macOS machine to a Samsung external SSD, kept its identity and backups intact, and then enlarged its usable guest storage without reinstalling it. Clive still runs in UTM, with more breathing room for both the Mac mini and the guest.",
     "technicalSummary": "Migrated an existing UTM Apple Virtualization macOS guest from a capacity-constrained Mac mini internal SSD to a Samsung T7 Shield, using complete VM backups, identity checks, a single-VM cutover, post-boot service validation and an 8 GiB RAM allocation. This restored approximately 158 GiB of host free space from a 6.8 GiB baseline. Later, verified the active Apple Sparse Image Format (ASIF) disk, used an APFS copy-on-write clone to test native GPT/Recovery relocation, and grew the production image from 150 to 250 GiB. An authenticated live APFS expansion added 100 GiB of usable guest space after FileVault blocked the offline test. Filesystem and OpenClaw service checks passed without changing the agent framework or sending business messages.",
     "stack": [
       "Apple Silicon + UTM Apple Virtualization",
@@ -156,9 +156,9 @@ export const makerProjects = [
       "OpenClaw gateway responded successfully, Telegram/Discord/Slack showed OK, and eight scheduled jobs remained listed; no upgrades or outbound validation messages were triggered"
     ],
     "planned": "The storage expansion is complete. Memory-file integrity and the full HBD STOP/approval/suppression rules still warrant separate read-only acceptance checks; a post-change reboot/restore drill has not been claimed. This is a privately operated environment, not a public hosted agent service.",
-    "image": "/clive-2-virtual-disk.svg",
-    "imageAlt": "Engineering diagram of Clive's Apple Silicon UTM environment and verified 250 GiB virtual disk, with APFS, Recovery and independent backup",
-    "imageCaption": "Original technical schematic of the verified disk layout, not a screenshot or an image of a live system",
+    "image": "/clive-rehoming.jpg",
+    "imageAlt": "Cartoon of Clive the lobster moving his belongings to a cozy external SSD home",
+    "imageCaption": "",
     "writingSlug": "clive-2-apple-silicon-virtual-disk-expansion"
   },
   {
