@@ -1,59 +1,62 @@
 import Link from "next/link";
-import MakerFeature from "../../components/MakerFeature";
+import ProjectShelf from "../../components/ProjectShelf";
 import { ventures, siteProfile } from "../../content/site";
-
-const themes = ["01 / OPERATIONS","02 / SOFTWARE","03 / HUMAN-CENTERED AI","04 / WEBCARE"];
 
 export const metadata = {
   title: "Independent Projects",
-  description: "Explore practical AI and software projects built by Dean Reese through Home Based Daddy, LLC.",
+  description: "Explore practical AI, software, games, and hardware projects built by Dean Reese.",
 };
 
 export default function VenturesPage() {
   return (
-    <div className="container-wide">
-      <div className="small-header">
-        <p className="section-eyebrow">INDEPENDENT BUILDS / HOME BASED DADDY</p>
+    <div className="container-wide projects-index">
+      <header className="small-header">
+        <p className="section-eyebrow">THE PROJECT SHELF</p>
         <h1 className="section-title">Things I&apos;m building.</h1>
-        <p className="section-lede">I like products that help actual people with actual problems. Here&apos;s a look at work outside my day job, from human-centered AI to small-business software.</p>
-        <a href={siteProfile.portfolioUrl} target="_blank" rel="noreferrer" className="text-link" style={{display:"inline-block",marginTop:20}}>Visit Home Based Daddy ↗</a>
-      </div>
-      <div className="venture-grid venture-detail-grid">
-        {ventures.map((v,i) => {
-          const url = "url" in v && v.url ? v.url : null;
-          return (
-            <article className="venture-card" key={v.name}>
-              <div className={"venture-art variant-" + (i % 4)}>
-                <span className="venture-art-small">{themes[i] || "INDEPENDENT WORK"}</span>
-                <span className="venture-art-name">{v.name}</span>
-              </div>
-              <div className="venture-body">
-                <p className="venture-meta">Home Based Daddy, LLC</p>
-                <h2 className="venture-name">{v.name}</h2>
-                <p className="venture-desc">{v.description}</p>
-                {url ? <a href={url} target="_blank" rel="noreferrer" className="venture-open">Visit the public project ↗</a> :
-                  <span className="venture-open">A project in the HBD portfolio</span>}
+        <p className="section-lede">Games for my family, hardware with a personality, and software that makes life easier. Pick a project and see how it came together.</p>
+        <nav className="project-section-nav" aria-label="Project collections">
+          <a href="#maker-lab">Personal maker lab <span aria-hidden="true">↓</span></a>
+          <a href="#businesses">Home Based Daddy businesses <span aria-hidden="true">↓</span></a>
+        </nav>
+      </header>
+      <section className="project-collection" id="maker-lab" aria-labelledby="maker-projects-heading">
+        <div className="section-heading-row">
+          <div>
+            <p className="section-eyebrow">PERSONAL MAKER LAB</p>
+            <h2 id="maker-projects-heading" className="collection-title">Curiosity, made real.</h2>
+          </div>
+          <p className="collection-note">The full story is one click away.</p>
+        </div>
+        <ProjectShelf />
+      </section>
+      <section className="project-collection business-collection" id="businesses" aria-labelledby="business-heading">
+        <div className="section-heading-row">
+          <div>
+            <p className="section-eyebrow">HOME BASED DADDY, LLC</p>
+            <h2 id="business-heading" className="collection-title">The business side.</h2>
+            <p className="section-lede">Independent products and services, separate from the personal maker lab.</p>
+          </div>
+          <a href={siteProfile.portfolioUrl} target="_blank" rel="noreferrer" className="text-link">Visit Home Based Daddy ↗</a>
+        </div>
+        <div className="business-shelf">
+          {ventures.map((venture, i) => (
+            <article className="business-tile" key={venture.name}>
+              <span className={`business-mark variant-${i}`} aria-hidden="true">{["BF", "K", "ST", "HBD"][i]}</span>
+              <div>
+                <h3>{venture.name}</h3>
+                <p>{venture.description}</p>
+                {"url" in venture && venture.url ? (
+                  <a href={venture.url} target="_blank" rel="noreferrer" className="text-link">Visit project ↗</a>
+                ) : <span className="business-portfolio-label">In the HBD portfolio</span>}
               </div>
             </article>
-          );
-        })}
-      </div>
-      <section className="maker-projects-section" aria-labelledby="maker-projects-heading">
-        <p className="section-eyebrow">PERSONAL MAKER LAB / SEPARATE FROM THE BUSINESS PORTFOLIO</p>
-        <h2 id="maker-projects-heading" className="section-title">Experiments worth building.</h2>
-        <p className="section-lede">Not every project needs to become a product. Sometimes the point is to test the boundaries between software, hardware and human interaction.</p>
-        <MakerFeature />
-      </section>
-      <section style={{marginBottom:75}}>
-        <div className="ask-band">
-          <div>
-            <p className="hero-kicker" style={{marginBottom:12}}>THE OTHER SIDE OF MY WORK</p>
-            <h2>Want the career version?</h2>
-            <p>My professional background spans technical account management, payments, banking technology, and enterprise delivery.</p>
-          </div>
-          <Link href="/work" className="button-neo primary">View experience ↗</Link>
+          ))}
         </div>
       </section>
+      <div className="project-footer-links">
+        <Link className="text-link" href="/writing">Browse all writing ↗</Link>
+        <Link className="text-link" href="/work">Looking for the career version? ↗</Link>
+      </div>
     </div>
   );
 }

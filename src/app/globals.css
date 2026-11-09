@@ -202,3 +202,62 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 
 /* Keep the complete moving-day illustration visible without cropping its lettering. */
 .maker-feature-image img[src="/clive-rehoming.jpg"] { height: auto; min-height: 0; max-height: none; object-fit: contain; }
+
+/* Browse first, dive deeper second. Keep artwork intact and copy off the image. */
+.site-main:not(:has(.retro-home)) > .projects-index { max-width: 1260px; }
+.projects-index .small-header { padding-top: 24px; }
+.project-shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.project-tile { min-width: 0; display: flex; flex-direction: column; background: #10192f; border: 1px solid #26364d; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 28px rgba(15,25,50,.07); transition: transform .2s, box-shadow .2s; }
+.project-tile:hover { transform: translateY(-4px); box-shadow: 0 16px 38px rgba(15,25,50,.15); }
+.project-tile-main { display: flex; flex-direction: column; flex: 1; color: #f4f7ff; text-decoration: none; }
+.project-tile-main:focus-visible { outline-offset: -4px; border-radius: 18px; }
+.project-thumbnail { aspect-ratio: 16 / 10; background: #080e1d; display: grid; place-items: center; overflow: hidden; }
+.project-thumbnail img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.project-tile-copy { display: flex; flex-direction: column; flex: 1; padding: 23px; }
+.project-tile-label { color: #86ecdb; font-size: 10px; letter-spacing: .13em; font-weight: 800; line-height: 1.6; }
+.project-tile-copy h3 { color: white; font-size: 23px; font-weight: 800; letter-spacing: -.04em; line-height: 1.2; margin: 9px 0 12px; }
+.project-tile-summary { color: #ccd6e9; font-size: 14px; line-height: 1.65; margin-bottom: 22px; }
+.project-tile-read { color: #8aefdd; font-size: 12px; font-weight: 800; margin-top: auto; }
+.project-tile-main:hover .project-tile-read { text-decoration: underline; }
+.project-tile-play { display: block; color: #10192f; background: #a8f1df; padding: 12px 23px; font-size: 12px; font-weight: 800; text-decoration: none; }
+.project-tile-play:hover { background: #c9faec; }
+.project-tile-play:focus-visible { outline-offset: -4px; }
+.business-home-band { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-top: 1px solid #d5d7e0; margin-top: 34px; padding-top: 26px; }
+.business-home-band .section-eyebrow { margin-bottom: 8px; font-size: 10px; }
+.business-home-band p:not(.section-eyebrow) { color: #586176; font-size: 14px; line-height: 1.6; }
+.project-section-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 25px 0 8px; }
+.project-section-nav a { padding: 11px 15px; border: 1px solid #d2cce4; border-radius: 999px; color: #5641a9; font-size: 12px; font-weight: 700; text-decoration: none; }
+.project-section-nav a:hover { background: #eae5f4; }
+.project-collection { margin-top: 40px; scroll-margin-top: 24px; }
+.collection-title { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 850; line-height: 1.15; letter-spacing: -.045em; }
+.collection-note { color: #697184; font-size: 13px; }
+.business-collection { margin-top: 64px; padding-top: 38px; border-top: 1px solid #d5d7e0; }
+.business-collection .section-lede { font-size: 14px; margin-top: 12px; }
+.business-shelf { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.business-tile { display: flex; align-items: flex-start; gap: 18px; padding: 24px; background: white; border: 1px solid #dce0e6; border-radius: 18px; }
+.business-mark { width: 52px; height: 52px; flex-shrink: 0; display: grid; place-items: center; border-radius: 14px; background: #e9ddf4; color: #634196; font-size: 15px; font-weight: 850; }
+.business-mark.variant-1 { background: #d5eeeb; color: #176b6c; }
+.business-mark.variant-2 { background: #ffe3d1; color: #9b4659; }
+.business-mark.variant-3 { background: #e1e3fa; color: #514e9c; }
+.business-tile h3 { font-weight: 800; font-size: 20px; letter-spacing: -.035em; }
+.business-tile p { font-size: 13px; line-height: 1.65; color: #586176; margin: 8px 0 13px; }
+.business-tile .text-link, .business-portfolio-label { font-size: 11px; }
+.business-portfolio-label { color: #697184; }
+.project-footer-links { display: flex; flex-wrap: wrap; gap: 20px 35px; margin: 45px 0 20px; }
+@media (max-width: 950px) {
+  .project-shelf { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+}
+@media (max-width: 630px) {
+  .project-shelf { grid-template-columns: 1fr; gap: 16px; }
+  .project-tile-main { display: grid; grid-template-columns: 100px minmax(0,1fr); align-items: start; }
+  .project-thumbnail { aspect-ratio: 1; margin: 20px 0 0 14px; }
+  .project-tile-copy { padding: 20px 16px 20px 28px; }
+  .project-tile-copy h3 { font-size: 20px; }
+  .project-tile-label { font-size: 9px; letter-spacing: .08em; }
+  .project-tile-summary { font-size: 13px; margin-bottom: 15px; }
+  .project-tile-play { padding: 12px 20px; }
+  .business-home-band { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .business-shelf { grid-template-columns: 1fr; }
+  .business-tile { padding: 20px; gap: 14px; }
+  .project-section-nav { gap: 9px; }
+}
