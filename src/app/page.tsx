@@ -1,6 +1,6 @@
 import Link from "next/link";
-import MakerFeature from "../components/MakerFeature";
-import { siteProfile, ventures, experiences, focusAreas } from "../content/site";
+import ProjectShelf from "../components/ProjectShelf";
+import { experiences, focusAreas } from "../content/site";
 import { orderedWritingPosts } from "../content/writing";
 
 const spotlight = [
@@ -10,7 +10,6 @@ const spotlight = [
   experiences.find((e) => e.company === "KlariVis"),
 ].filter(Boolean);
 
-const visualTags = ["01 / SOFTWARE", "02 / OPERATIONS", "03 / HUMAN-CENTERED AI", "04 / DIGITAL SERVICES"];
 
 export default function HomePage() {
   return (
@@ -47,36 +46,18 @@ export default function HomePage() {
           <div>
             <p className="section-eyebrow">01 / AFTER HOURS</p>
             <h2 className="section-title">Ideas that escape<br />the notes app.</h2>
-            <p className="section-lede">Home Based Daddy is where I turn curiosity into useful products. Some are live, some are growing, and all are built around real problems.</p>
+            <p className="section-lede">A few favorites from my personal maker lab. Pick what catches your eye, then get the story behind the build.</p>
           </div>
-          <Link className="text-link" href="/ventures">All projects ↗</Link>
+          <Link className="text-link" href="/ventures">Browse all projects ↗</Link>
         </div>
-        <div className="venture-grid">
-          {ventures.map((v, i) => {
-            const href = "url" in v && v.url ? v.url : "/ventures";
-            const external = href.startsWith("http");
-            return (
-              <a className="venture-card" href={href} key={v.name} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
-                <div className={"venture-art variant-" + (i % 4)}>
-                  <span className="venture-art-small">{visualTags[i] || "INDEPENDENT PROJECT"}</span>
-                  <span className="venture-art-name">{v.name}</span>
-                </div>
-                <div className="venture-body">
-                  <p className="venture-meta">Home Based Daddy / Selected project</p>
-                  <h3 className="venture-name">{v.name}</h3>
-                  <p className="venture-desc">{v.description}</p>
-                  <span className="venture-open">{external ? "Visit project ↗" : "Explore portfolio ↗"}</span>
-                </div>
-              </a>
-            );
-          })}
+        <ProjectShelf featured />
+        <div className="business-home-band">
+          <div>
+            <p className="section-eyebrow">THE BUSINESS SIDE / HOME BASED DADDY</p>
+            <p>Practical software and services for real-world problems.</p>
+          </div>
+          <Link className="text-link" href="/ventures#businesses">Explore the businesses ↗</Link>
         </div>
-        <div className="maker-home-intro">
-          <p className="section-eyebrow">PERSONAL MAKER LAB / AFTER HOURS</p>
-          <h3 className="maker-home-title">When the prototype has a personality.</h3>
-        </div>
-        <MakerFeature />
-        <a href={siteProfile.portfolioUrl} className="text-link" style={{display:"inline-block",marginTop:26}} target="_blank" rel="noreferrer">More from Home Based Daddy ↗</a>
       </section>
 
       <section className="retro-section proof-section">

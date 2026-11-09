@@ -133,6 +133,8 @@ export const ventures = [
 export const makerProjects = [
   {
     "name": "Clive 2.0",
+    cardLabel: "AI OPERATIONS",
+    cardSummary: "More breathing room for my AI operator, without starting him over.",
     "expandedName": "A Bigger Home for My AI Operator",
     "category": "Personal systems engineering / applied AI operations",
     "status": "Operational external-SSD macOS VM · 250 GiB verified · November 2026",
@@ -163,6 +165,8 @@ export const makerProjects = [
   },
   {
     "name": "Dana’s Dog Dash",
+    cardLabel: "PLAYABLE GAME",
+    cardSummary: "Two dogs, five Coke Zeros, and a couch. A retro arcade game made for Dana.",
     "expandedName": "A Personalized Retro Browser Arcade",
     "category": "Personal game-engineering project",
     "status": "Live three-level browser game · November 2026",
@@ -192,6 +196,8 @@ export const makerProjects = [
   },
   {
     name: "unDEANiable Engine",
+    cardLabel: "VOICE + AI",
+    cardSummary: "A voice-first companion for choosing meaningful work and protecting focus.",
     expandedName: "Ophanim Voice & Focus Companion",
     category: "Personal applied-AI engineering project",
     status: "Working cloud and iPhone voice prototype · November 2026",
@@ -213,6 +219,8 @@ export const makerProjects = [
   },
   {
     name: "Dean & Dana HQ Frame",
+    cardLabel: "HOME + HARDWARE",
+    cardSummary: "An Android photo frame turned into our shared calendar, lists, and household dashboard.",
     expandedName: "Private Household Dashboard & Kiosk",
     category: "Personal systems-integration project",
     status: "Working household system · November 2026",
@@ -233,6 +241,8 @@ export const makerProjects = [
   },
   {
     name: "SH-3PB",
+    cardLabel: "CHARACTER + HARDWARE",
+    cardSummary: "A salvaged droid popcorn bucket with a voice, a personality, and plenty to say.",
     expandedName: "Severed Head 3 Popcorn Bucket",
     category: "Personal maker project",
     status: "Working conversational prototype · October 2026",
