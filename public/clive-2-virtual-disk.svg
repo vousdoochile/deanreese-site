@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+<title id="title">Clive 2.0: 250 GiB UTM virtual disk expansion</title>
+<desc id="desc">Technical schematic showing a Mac mini hosting UTM and an ASIF macOS disk on Samsung external SSD. The APFS container expanded to 262.5 GB, Recovery remains separate, and usable free space increased from 26 GiB to 126 GiB.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#090F21"/><stop offset=".52" stop-color="#101B39"/><stop offset="1" stop-color="#091322"/></linearGradient>
+ <linearGradient id="disk" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#3460E6"/><stop offset=".95" stop-color="#54D7F2"/></linearGradient>
+ <linearGradient id="stat" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#56E2C7"/><stop offset="1" stop-color="#ACF4C3"/></linearGradient>
+ <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#8BBDFF" stroke-opacity=".075" stroke-width="1"/></pattern>
+</defs>
+<rect width="1000" height="1000" rx="34" fill="url(#bg)"/>
+<rect width="1000" height="1000" fill="url(#grid)"/>
+<circle cx="865" cy="126" r="188" fill="#75AFFF" opacity=".05"/>
+<circle cx="120" cy="775" r="170" fill="#44E3B8" opacity=".06"/>
+<g font-family="Arial, Helvetica, sans-serif">
+ <text x="72" y="87" fill="#58E4CA" font-size="24" font-weight="700" letter-spacing="5">SYSTEMS ENGINEERING / CASE STUDY</text>
+ <text x="69" y="165" fill="#F3F8FF" font-size="68" font-weight="800" letter-spacing="-2">CLIVE 2.0</text>
+ <text x="72" y="218" fill="#B2C7E4" font-size="28">Apple Silicon  ·  UTM  ·  OpenClaw</text>
+ <rect x="70" y="266" width="860" height="158" rx="24" fill="#121F3B" stroke="#3D5476" stroke-width="2"/>
+ <g transform="translate(96,301)">
+  <rect x="0" y="14" width="96" height="66" rx="15" fill="#1A2D4D" stroke="#5C7EAE" stroke-width="2"/>
+  <rect x="12" y="26" width="72" height="42" rx="9" fill="#172948" stroke="#547BAF"/>
+  <circle cx="48" cy="47" r="14" fill="none" stroke="#72D3F1" stroke-width="3"/>
+  <path d="M48 33v28M34 47h28" stroke="#72D3F1" stroke-width="2"/>
+ </g>
+ <text x="217" y="328" fill="#F4F8FF" font-size="29" font-weight="700">Mac mini host</text>
+ <text x="217" y="366" fill="#AFC3E1" font-size="23">UTM Apple Virtualization</text>
+ <path d="M563 340h74" stroke="#70DECE" stroke-width="4" stroke-linecap="round"/>
+ <path d="M625 330l15 10-15 10" fill="none" stroke="#70DECE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+ <text x="671" y="328" fill="#F4F8FF" font-size="27" font-weight="700">External SSD</text>
+ <text x="671" y="365" fill="#AFC3E1" font-size="22">ASIF macOS image</text>
+ <text x="72" y="492" fill="#B2C7E4" font-size="24" font-weight="700" letter-spacing="3">VERIFIED VIRTUAL DISK LAYOUT</text>
+ <text x="70" y="558" fill="#F4F8FF" font-size="56" font-weight="800">250 <tspan fill="#57DFCD">GiB</tspan></text>
+ <text x="326" y="551" fill="#B1C6E2" font-size="22">virtual disk capacity</text>
+ <rect x="70" y="596" width="860" height="82" rx="14" fill="#20314D"/>
+ <clipPath id="barclip"><rect x="70" y="596" width="860" height="82" rx="14"/></clipPath>
+ <g clip-path="url(#barclip)">
+  <rect x="70" y="596" width="4" height="82" fill="#B9D0E5"/>
+  <rect x="74" y="596" width="836" height="82" fill="url(#disk)"/>
+  <rect x="910" y="596" width="20" height="82" fill="#F5B46F"/>
+ </g>
+ <text x="91" y="646" fill="#09182C" font-size="27" font-weight="800">Main APFS · 262.5 GB</text>
+ <text x="661" y="717" fill="#B4C8E6" font-size="20">Recovery · 5.4 GB</text>
+ <path d="M918 684v15h-25" fill="none" stroke="#F5B46F" stroke-width="2"/>
+ <text x="71" y="714" fill="#B4C8E6" font-size="20">ISC · 524 MB</text>
+ <rect x="70" y="761" width="860" height="148" rx="24" fill="#152A3C" stroke="#447B75" stroke-width="2"/>
+ <text x="105" y="803" fill="#B6D7DF" font-size="23" font-weight="700">GUEST AVAILABLE STORAGE</text>
+ <text x="102" y="870" fill="#F5F7FF" font-size="47" font-weight="800">26 GiB</text>
+ <path d="M333 848h112" fill="none" stroke="#70E3CE" stroke-width="6" stroke-linecap="round"/>
+ <path d="M429 831l21 17-21 17" fill="none" stroke="#70E3CE" stroke-width="6" stroke-linejoin="round"/>
+ <text x="485" y="870" fill="#7CF0CF" font-size="55" font-weight="800">126 GiB</text>
+ <text x="105" y="953" fill="#99B2D0" font-size="19">Native ASIF resize + live APFS growth  ·  FileVault preserved  ·  8 GiB RAM</text>
+</g>
+</svg>
