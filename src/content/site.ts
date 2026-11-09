@@ -133,11 +133,11 @@ export const ventures = [
 export const makerProjects = [
   {
     "name": "Clive 2.0",
-    "expandedName": "Reliable Mac Virtualization for an HBD OpenClaw Operator",
+    "expandedName": "Rehoming an HBD AI Operator on Apple Silicon",
     "category": "Personal systems engineering / applied AI operations",
-    "status": "Operational macOS VM · 250 GiB storage verified · November 2026",
-    "description": "Clive is my persistent macOS environment for Home Based Daddy's OpenClaw-based operations. The work wasn't inventing another agent framework. It was designing, migrating, protecting, and validating the infrastructure that lets an existing agent platform do useful work without putting the business at the mercy of one fragile virtual disk.",
-    "technicalSummary": "Engineered an Apple Silicon UTM/macOS guest on a Samsung T7 Shield, retaining a fixed 8 GiB RAM allocation and independent recovery copies. Verified the exact active VM and Apple Sparse Image Format (ASIF), cloned the image for an isolated resize trial, established the GPT/APFS/Recovery boundaries, and expanded the production ASIF disk from 150 to 250 GiB. Recovered 100 GiB of usable guest capacity with a live native APFS grow after FileVault prevented offline enlargement. Proved the result with filesystem checks and verified the OpenClaw gateway, messaging channels and cron inventory without modifying agent code or triggering outbound work.",
+    "status": "Operational external-SSD macOS VM · 250 GiB verified · November 2026",
+    "description": "A 16 GB Mac mini with a 256 GB internal SSD was running out of room for Clive, my persistent OpenClaw-based HBD operator. I moved the existing UTM macOS machine to a Samsung external SSD, kept its identity and backups intact, and then enlarged its usable guest storage without reinstalling it. The project is about systems engineering and reliability, not inventing the underlying agent framework.",
+    "technicalSummary": "Migrated an existing UTM Apple Virtualization macOS guest from a capacity-constrained Mac mini internal SSD to a Samsung T7 Shield, using complete VM backups, identity checks, a single-VM cutover, post-boot service validation and an 8 GiB RAM allocation. This restored approximately 158 GiB of host free space from a 6.8 GiB baseline. Later, verified the active Apple Sparse Image Format (ASIF) disk, used an APFS copy-on-write clone to test native GPT/Recovery relocation, and grew the production image from 150 to 250 GiB. An authenticated live APFS expansion added 100 GiB of usable guest space after FileVault blocked the offline test. Filesystem and OpenClaw service checks passed without changing the agent framework or sending business messages.",
     "stack": [
       "Apple Silicon + UTM Apple Virtualization",
       "macOS 26 + FileVault/APFS",
@@ -147,6 +147,7 @@ export const makerProjects = [
       "Read-only probes + controlled change gates"
     ],
     "verified": [
+      "Migrated the existing UTM macOS VM from the Mac mini internal SSD to the Samsung T7 Shield, preserving its working identity and recovering approximately 151 GiB of host free space",
       "Reidentified the active Samsung-hosted VM through UTM registration and the host virtualization process, avoiding a stale duplicate registration",
       "Created a current full-VM Porsche recovery copy and passed a recursive file comparison before production changes",
       "Used a separate APFS copy-on-write test image to verify 150-to-250 GiB ASIF growth and native Recovery partition relocation",
