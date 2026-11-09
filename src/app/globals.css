@@ -199,3 +199,6 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .maker-feature-image img { min-height: 250px; max-height: 390px; object-fit: cover; }
   .maker-feature-copy { padding: 25px 22px 30px; }
 }
+
+/* Keep the complete moving-day illustration visible without cropping its lettering. */
+.maker-feature-image img[src="/clive-rehoming.jpg"] { height: auto; min-height: 0; max-height: none; object-fit: contain; }
