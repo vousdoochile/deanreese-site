@@ -261,3 +261,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .business-tile { padding: 20px; gap: 14px; }
   .project-section-nav { gap: 9px; }
 }
+
+/* A human invitation, with the professional detail one click away. */
+.credibility-summary { max-width: 850px; color: #d3dcec; font-size: 16px; line-height: 1.8; position: relative; z-index: 1; }
+.why-build-copy { max-width: 800px; margin-top: 24px; color: #586176; font-size: 17px; line-height: 1.85; }
+.why-build-copy p + p { margin-top: 18px; }
+.ask-band .human-contact-note { margin-top: 18px; font-size: 13px; }
+.human-contact-note a { color: #97f3df; text-decoration: underline; text-underline-offset: 3px; }

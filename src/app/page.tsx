@@ -1,15 +1,7 @@
 import Link from "next/link";
 import ProjectShelf from "../components/ProjectShelf";
-import { experiences, focusAreas } from "../content/site";
+import { siteProfile } from "../content/site";
 import { orderedWritingPosts } from "../content/writing";
-
-const spotlight = [
-  experiences.find((e) => e.company === "Stripe"),
-  experiences.find((e) => e.company === "Home Based Daddy, LLC"),
-  experiences.find((e) => e.company === "Paymentus"),
-  experiences.find((e) => e.company === "KlariVis"),
-].filter(Boolean);
-
 
 export default function HomePage() {
   return (
@@ -24,10 +16,10 @@ export default function HomePage() {
           <div>
             <div className="hero-kicker"><span className="signal-dot" /> TECH BY DAY. BUILDER BY NATURE.</div>
             <h1 className="hero-title">The future<br /><em>should be</em><br /><strong>useful.</strong></h1>
-            <p className="hero-description">I&apos;m Dean. I help ambitious teams solve complex technology problems, and I build practical AI products of my own.</p>
+            <p className="hero-description">I&apos;m Dean. I work in payments, build businesses, and occasionally give a popcorn bucket a personality. I like making useful things for real people, especially the people I love.</p>
             <div className="hero-ctas">
               <Link className="button-neo primary" href="/ventures">See what I&apos;m building <span aria-hidden="true">↗</span></Link>
-              <Link className="button-neo secondary" href="/resume">The professional side <span aria-hidden="true">↗</span></Link>
+              <a className="button-neo secondary" href={siteProfile.linkedinUrl}>Say hello <span aria-hidden="true">↗</span></a>
             </div>
             <p className="hero-mini">Technical Account Manager at Stripe <span aria-hidden="true">✦</span> Founder, Home Based Daddy, LLC <span aria-hidden="true">✦</span> AIGP</p>
           </div>
@@ -66,37 +58,22 @@ export default function HomePage() {
             <div>
               <p className="section-eyebrow" style={{color:"#6ff0db"}}>02 / THE PROFESSIONAL SIDE</p>
               <h2 className="section-title">Built in the real world.<br />Not just in theory.</h2>
-              <p className="section-lede">Enterprise technology, payment infrastructure, customer partnerships, and the hard work of getting complicated systems to deliver value.</p>
+              <p className="section-lede">A career in technology, with people at the center.</p>
             </div>
             <Link className="text-link" href="/work" style={{color:"#6ff0db"}}>Full experience ↗</Link>
           </div>
-          <div>
-            {spotlight.map((item, i) => item ? (
-              <div className="role-row" key={item.company}>
-                <div className="role-number">0{i + 1} / {item.dates}</div>
-                <div>
-                  <div className="role-title">{item.featuredTitle || item.company}</div>
-                  <p className="role-desc">{item.featuredDescription || item.bullets[0]}</p>
-                </div>
-              </div>
-            ) : null)}
-          </div>
+          <p className="credibility-summary">By day, I&apos;m a Technical Account Manager at Stripe. Before that, I worked across payments delivery, banking technology, and customer enablement at Paymentus and KlariVis. The common thread: helping people make complicated systems work in real life.</p>
           <p style={{fontSize:12,color:"#aabbd3",marginTop:26}}>Experience and independent projects are distinct. Everything on this site represents my own work and views.</p>
         </div>
       </section>
 
       <section className="retro-section container-wide">
-        <p className="section-eyebrow">03 / HOW I THINK</p>
-        <h2 className="section-title">Curiosity, meet follow-through.</h2>
-        <p className="section-lede">I like work that combines technical detail with a human reason for doing it.</p>
-        <div className="focus-grid">
-          {focusAreas.map((f,i) => (
-            <div className="focus-tile" key={f.title}>
-              <div className="focus-icon" aria-hidden="true">{["✳","◇","✦"][i] || "✳"}</div>
-              <h3>{f.title}</h3>
-              <p>{f.description}</p>
-            </div>
-          ))}
+        <p className="section-eyebrow">03 / WHY I BUILD</p>
+        <h2 className="section-title">A little more freedom.<br />A lot more curiosity.</h2>
+        <div className="why-build-copy">
+          <p>I&apos;m building a business and a life with more room to choose what I work on and how I spend my time. That&apos;s what freedom means to me. Not doing nothing. Doing more of what matters.</p>
+          <p>Sometimes that means useful software. Sometimes it means a game for Dana or a droid with opinions. I grew up loving cartoons, video games, and the worlds they let me step into. I still love that feeling. Now I get to build some of those worlds myself.</p>
+          <p>I want the things I make to help people, make them smile, or give them a little breathing room. Ideally, all three.</p>
         </div>
       </section>
 
@@ -123,11 +100,12 @@ export default function HomePage() {
       <section className="container-wide" style={{paddingBottom:100}}>
         <div className="ask-band">
           <div>
-            <p className="hero-kicker" style={{marginBottom:12}}>A LITTLE EXPERIMENT</p>
-            <h2>Ask my AI alter ego.</h2>
-            <p>Curious about my projects, career, or approach to AI? Ask Dean answers from my published work, not made-up achievements.</p>
+            <p className="hero-kicker" style={{marginBottom:12}}>GOOD PEOPLE. INTERESTING IDEAS.</p>
+            <h2>Building something of your own?</h2>
+            <p>I&apos;d love to hear about it. Fellow founders, curious makers, people figuring it out as they go: say hello. You don&apos;t need a polished pitch.</p>
+            <p className="human-contact-note">Want to explore first? <Link href="/chat">Ask my AI alter ego</Link> about my published work.</p>
           </div>
-          <Link href="/chat" className="button-neo primary">Ask Dean <span aria-hidden="true">↗</span></Link>
+          <a href={siteProfile.linkedinUrl} className="button-neo primary">Say hello on LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
       </section>
     </div>
