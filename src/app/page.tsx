@@ -1,4 +1,6 @@
 import Link from "next/link";
+import ArcadeWindow from "../components/deanvaders/ArcadeWindow";
+import arcadeStyles from "../components/deanvaders/deanvaders.module.css";
 import ProjectShelf from "../components/ProjectShelf";
 import { siteProfile } from "../content/site";
 import { orderedWritingPosts } from "../content/writing";
@@ -75,6 +77,18 @@ export default function HomePage() {
           <p>Sometimes that means useful software. Sometimes it means a game for Dana or a droid with opinions. I grew up loving cartoons, video games, and the worlds they let me step into. I still love that feeling. Now I get to build some of those worlds myself.</p>
           <p>I want the things I make to help people, make them smile, or give them a little breathing room. Ideally, all three.</p>
         </div>
+      </section>
+
+      <section className={`container-wide ${arcadeStyles.homeSection}`} id="arcade" aria-label="Dean’s mini arcade">
+        <div className={arcadeStyles.homeCopy}>
+          <p className={arcadeStyles.label}>A LITTLE BREATHING ROOM</p>
+          <h2>Sometimes useful<br />means fun.</h2>
+          <p>My head. Eye lasers. An unreasonable number of emails, bills, Zoom meetings, and Jira tickets. Welcome to Deanvaders.</p>
+          <p>Catch a coffee, clear your schedule, and take a tiny break from being a responsible adult.</p>
+          <div className={arcadeStyles.roster}><span>✉ Inbox overload</span><span>☕ Coffee-powered</span><span>↔ Keyboard + touch</span></div>
+          <Link href="/play">Want a little more room? Open the arcade ↗</Link>
+        </div>
+        <ArcadeWindow />
       </section>
 
       <section className="retro-section container-wide" style={{paddingTop:15}}>
