@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');const nodes={};const element=()=>({hidden:false,append(){},replaceChildren(){},showModal(){},close(){},setAttribute(){},getContext(){return new Proxy({createRadialGradient(){return{addColorStop(){}}}},{get(t,k){return t[k]||(()=>{})}})}});const cache={};const c={document:{getElementById(id){return nodes[id]??=element()},createElement:element},localStorage:{getItem:k=>cache[k],setItem:(k,v)=>cache[k]=v},window:{scrollTo(){}},confirm:()=>true,console,Math};vm.createContext(c);vm.runInContext(fs.readFileSync('public/tyler/game.js','utf8'),c);const run=code=>vm.runInContext(code,c);
+run('start()');assert.equal(run('s.room'),'tavern');
+run('rooms.tavern().choices[0].fn(); rooms.tavern().choices[1].fn(); rooms.tavern().choices[2].fn(); rooms.tavern().choices[3].fn()');assert.equal(run('s.room'),'forest');
+run('rooms.forest().choices[0].fn()');assert.equal(run('has("Moonstone")'),true);assert.equal(run('has("Tavern bread")'),false);
+run('rooms.bridge().choices[2].fn(); rooms.bridge().choices[0].fn(); rooms.crypt().choices[1].fn(); rooms.vault().choices[1].fn()');assert.equal(run('s.room'),'ending');assert.equal(run('s.flags.ending'),'mercy');assert.ok(cache['tyler-last-torch-v1']);
+run('s=fresh(); go("forest"); rooms.forest().choices[1].fn(); rooms.riddle().choices[1].fn()');assert.equal(run('s.room'),'riddle');run('rooms.riddle().choices[0].fn(); rooms.bridge().choices[1].fn(); rooms.crypt().choices[2].fn(); rooms.vault().choices[0].fn()');assert.equal(run('s.flags.ending'),'free');
+run('s=fresh(); Math.random=()=>0; go("crypt"); rooms.crypt().choices[0].fn()');assert.equal(run('s.hp'),16);run('s.hp=1; rooms.crypt().choices[0].fn()');assert.equal(run('s.room'),'fallen');run('rooms.fallen().choices[0].fn()');assert.equal(run('s.hp'),20);
+run('add("Healing draught"); s.hp=10; heal()');assert.equal(run('s.hp'),18);assert.equal(run('has("Healing draught")'),false);
+run('Math.random=()=>.99; go("vault"); rooms.vault().choices[2].fn()');assert.equal(run('s.flags.ending'),'blade');
+for(const room of ['tavern','forest','riddle','bridge','crypt','vault','fallen','ending'])run(`go('${room}')`);
+for(const file of ['index.html','style.css','game.js','hero.webp'])assert.ok(fs.statSync('public/tyler/'+file).size>0);
+console.log('PASS: three endings, riddle, inventory, healing, combat success/failure, recovery, save, all scenes, and assets.');
