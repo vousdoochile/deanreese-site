@@ -87,7 +87,12 @@ export class ArcadeAudio {
 
   update(g: Game) {
     if (this.disposed || !this.enabled || this.context.state !== "running") return;
-    if (g.status !== "playing") { this.silence(); return; }
+    if (g.status !== "playing") {
+      this.silence();
+      // End the soundtrack immediately, but let the final collision be heard.
+      if (g.status === "over" && g.sound === "hit") this.tone(100, false, true);
+      return;
+    }
     const now = this.context.currentTime;
     if (g.sound) {
       // The laser/effects remain in front of the bass, even during rapid coffee fire.

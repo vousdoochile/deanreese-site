@@ -83,3 +83,11 @@ test('resuming/restarting cannot stack tracks; dispose releases nodes/context', 
   audio.dispose(); assert.equal(context.state,'closed'); assert.ok(context.filters[0].disconnected); assert.ok(context.gains[0].disconnected);
   audio.update(game); assert.equal(context.oscillators.length,3);
 });
+test('a fatal hit still sounds while the music stops', async()=>{
+  const {context,audio,game}=setup(); await audio.unlock(); audio.setEnabled(true); audio.update(game);
+  game.lives=1; game.hazards=[{x:game.x,y:engine.PLAYER_Y,vx:0,vy:0}];
+  engine.step(game,{left:false,right:false,fire:false,target:null},1/60);
+  assert.equal(game.status,'over'); assert.equal(game.sound,'hit'); audio.update(game);
+  assert.ok(context.oscillators[0].stops.includes(undefined));
+  assert.equal(context.oscillators.length,2); assert.equal(context.oscillators[1].type,'triangle');
+});
