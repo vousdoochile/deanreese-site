@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createGame, Game, Input, step, WIDTH, HEIGHT } from "./engine";
 import { draw } from "./draw";
+import { ArcadeAudio, createArcadeAudio } from "./audio";
 import styles from "./deanvaders.module.css";
 
 const emptyInput = (): Input => ({left:false,right:false,fire:false,target:null});
@@ -14,13 +15,15 @@ export default function Deanvaders() {
   const game=useRef<Game>(createGame());
   const input=useRef<Input>(emptyInput());
   const head=useRef<HTMLImageElement|null>(null);
-  const audio=useRef<AudioContext|null>(null);
+  const audio=useRef<ArcadeAudio|null>(null);
+  const soundRequest=useRef(0);
   const soundOn=useRef(false);
   const reduced=useRef(false);
   const [status,setStatus]=useState<Game["status"]>("ready");
   const [hud,setHud]=useState({score:0,wave:1,lives:3,coffee:0,kills:0});
   const [best,setBest]=useState(0);
   const [muted,setMuted]=useState(true);
+  const [music,setMusic]=useState(true);
   const [calm,setCalm]=useState(false);
   const [message,setMessage]=useState("");
 
@@ -30,16 +33,17 @@ export default function Deanvaders() {
   },[]);
   const pause=useCallback(()=>{
     if(game.current.status!=="playing")return;
-    game.current.status="paused";input.current=emptyInput();setStatus("paused");
+    game.current.status="paused";input.current=emptyInput();audio.current?.silence();setStatus("paused");
   },[]);
   const start=()=>{
+    audio.current?.reset();
     game.current=createGame();game.current.status="playing";input.current=emptyInput();
     setHud({score:0,wave:1,lives:3,coffee:0,kills:0});setStatus("playing");
     setMessage("Game started. Move with arrow keys or A and D. Hold Space to fire.");
     canvas.current?.focus();
-    void audio.current?.resume().catch(()=>{});
+    if(soundOn.current)void audio.current?.unlock().catch(()=>{});
   };
-  const resume=()=>{game.current.status="playing";input.current=emptyInput();setStatus("playing");canvas.current?.focus();};
+  const resume=()=>{if(soundOn.current)void audio.current?.unlock().catch(()=>{});game.current.status="playing";input.current=emptyInput();setStatus("playing");canvas.current?.focus();};
 
   useEffect(()=>{
     const img=new Image();img.onload=paint;img.src="/deanvaders-head.webp";head.current=img;
@@ -58,7 +62,7 @@ export default function Deanvaders() {
     window.addEventListener("blur",pause);
     const observer=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)pause();},{threshold:0});
     if(shell.current)observer.observe(shell.current);
-    return ()=>{cancelAnimationFrame(preferencesFrame);media.removeEventListener("change",change);document.removeEventListener("visibilitychange",onHidden);window.removeEventListener("blur",pause);observer.disconnect();img.onload=null;void audio.current?.close().catch(()=>{});};
+    return ()=>{cancelAnimationFrame(preferencesFrame);media.removeEventListener("change",change);document.removeEventListener("visibilitychange",onHidden);window.removeEventListener("blur",pause);observer.disconnect();img.onload=null;audio.current?.dispose();audio.current=null;};
   },[paint,pause]);
 
   useEffect(()=>{
@@ -68,17 +72,7 @@ export default function Deanvaders() {
       const g=game.current;
       if(game.current.status!=="playing")return;
       step(g,input.current,last?(now-last)/1000:0);last=now;
-      const ac=audio.current;
-      if(soundOn.current && ac?.state==="running" && g.sound){
-        const oscillator=ac.createOscillator(),gain=ac.createGain();
-        const frequency={shot:700,pop:260,hit:100,coffee:900}[g.sound];
-        oscillator.type=g.sound==="hit"?"triangle":"sine";
-        oscillator.frequency.setValueAtTime(frequency,ac.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(frequency/2,ac.currentTime+.09);
-        gain.gain.setValueAtTime(.035,ac.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.1);
-        oscillator.connect(gain);gain.connect(ac.destination);oscillator.start();oscillator.stop(ac.currentTime+.11);
-        oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
-      }
+      audio.current?.update(g);
       paint();
       if(now-lastHud>100 || g.status==="over"){
         setHud({score:g.score,wave:g.wave,lives:g.lives,coffee:g.coffee,kills:g.kills});lastHud=now;
@@ -96,10 +90,18 @@ export default function Deanvaders() {
   },[status,paint]);
 
   const toggleSound=async()=>{
-    if(!muted){soundOn.current=false;setMuted(true);return;}
-    try{audio.current??=new AudioContext();await audio.current.resume();soundOn.current=true;setMuted(false);}
+    const request=++soundRequest.current;
+    if(soundOn.current){soundOn.current=false;audio.current?.setEnabled(false);setMuted(true);return;}
+    try{
+      audio.current??=createArcadeAudio();
+      const player=audio.current;
+      await player.unlock();
+      if(request!==soundRequest.current || audio.current!==player)return;
+      player.setMusic(music);player.setEnabled(true);soundOn.current=true;setMuted(false);
+    }
     catch{setMessage("Sound is unavailable in this browser. You can still play silently.");}
   };
+  const toggleMusic=()=>{audio.current?.setMusic(!music);setMusic(!music);};
   const key=(e:React.KeyboardEvent,down:boolean)=>{
     if(e.target!==canvas.current)return;
     const k=e.key.toLowerCase();
@@ -159,10 +161,11 @@ export default function Deanvaders() {
       <div className={styles.settings}>
         <button onClick={()=>status==="paused"?resume():pause()} disabled={status==="ready"||status==="over"}>{status==="paused"?"▶ Resume":"Ⅱ Pause"}</button>
         <button onClick={toggleSound} aria-pressed={!muted}>Sound {muted?"off":"on"}</button>
+        <button onClick={toggleMusic} aria-pressed={music} disabled={muted} title={muted?"Turn Sound on to hear music":"Toggle the quiet 8-bit pulse; keep laser sounds"}>Music {music?"on":"off"}</button>
         <button onClick={()=>{reduced.current=!calm;setCalm(!calm);paint();}} aria-pressed={calm}>Calm FX {calm?"on":"off"}</button>
       </div>
     </div>
-    <p id={helpId} className={styles.help}>← → / A D to move · Hold Space to fire · P / Esc to pause.<br/>Catch coffee for 8 seconds of extra-caffeinated lasers. Don&apos;t let work reach you.</p>
+    <p id={helpId} className={styles.help}>← → / A D to move · Hold Space to fire · P / Esc to pause.<br/>Catch coffee for 8 seconds of extra-caffeinated lasers. Each wave gets faster.<br/>Turn Sound on for lasers + a quiet 8-bit pulse. Music can be switched off separately.</p>
     <div role="status" aria-live="polite" className="sr-only">{message}</div>
     <p className={styles.privacy}>Made for a little breathing room. High score stays in this browser.</p>
   </div>;

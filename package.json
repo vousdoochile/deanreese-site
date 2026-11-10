@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/chat-safety.test.cjs && node tests/deanvaders.test.cjs",
+    "test": "node --test tests/chat-safety.test.cjs tests/deanvaders-audio.test.cjs tests/deanvaders-difficulty.test.cjs && node tests/deanvaders.test.cjs",
     "typecheck": "tsc --noEmit",
     "test:redis": "node --test tests/chat-quota-redis.test.cjs"
   },
