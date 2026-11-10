@@ -1,0 +1,25 @@
+// Run: node tests/deanvaders.test.cjs (uses the project's existing TypeScript compiler).
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const ts = require('typescript');
+const source = ts.transpileModule(fs.readFileSync('src/components/deanvaders/engine.ts','utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText;
+const mod={exports:{}};new Function('exports','module',source)(mod.exports,mod);
+const {createGame,step,WIDTH,PLAYER_Y}=mod.exports;
+const idle={left:false,right:false,fire:false,target:null};
+const game=()=>Object.assign(createGame(),{status:'playing'});
+let g=game();for(let i=0;i<300;i++)step(g,{...idle,left:true},1/60,()=>0);
+assert.equal(g.x,38,'Left movement stays in bounds');
+g=game();for(let i=0;i<300;i++)step(g,{...idle,right:true},1/60,()=>0);
+assert.equal(g.x,WIDTH-38,'Right movement stays in bounds');
+g=game();step(g,{...idle,fire:true},1/60);assert.equal(g.shots.length,2,'Two eye lasers');
+g=game();g.coffee=8;step(g,{...idle,fire:true},1/60);assert.equal(g.shots.length,4,'Coffee adds spread lasers');
+g=game();g.status='paused';const old=JSON.stringify(g);step(g,{...idle,fire:true},1);assert.equal(JSON.stringify(g),old,'Pause freezes simulation');
+g=game();g.cups=[{x:g.x,y:PLAYER_Y}];step(g,idle,1/60);assert.equal(g.coffee,8);assert.equal(g.score,250);assert.equal(g.cups.length,0);
+g=game();g.hazards=[{x:g.x,y:PLAYER_Y,vx:0,vy:0},{x:g.x,y:PLAYER_Y,vx:0,vy:0}];step(g,idle,1/60);assert.equal(g.lives,2,'Damage immunity prevents instant double hit');
+g=game();g.lives=1;g.hazards=[{x:g.x,y:PLAYER_Y,vx:0,vy:0}];step(g,idle,1/60);assert.equal(g.status,'over');
+g=game();g.enemies=[{id:1,x:100,y:200,kind:'email',phase:0}];g.shots=[{x:100,y:200,vx:0,vy:0}];step(g,idle,1/60);assert.equal(g.kills,1);assert.equal(g.score,600);assert.ok(g.waveDelay>0);for(let i=0;i<130;i++)step(g,idle,1/60,()=>0);assert.equal(g.wave,2);assert.equal(g.enemies.length,18);
+g=game();g.enemies[0].y=PLAYER_Y;step(g,idle,1/60);assert.equal(g.status,'over','Breach ends game');
+g=game();step(g,idle,100);assert.equal(g.time,.04,'Huge deltas are bounded');
+g=game();g.enemies=[{id:1,x:100,y:200,kind:'jira',phase:0}];g.kills=5;g.shots=[{x:100,y:200,vx:0,vy:0}];step(g,idle,1/60);assert.equal(g.cups.length,1,'Coffee drops every sixth clear');
+g=createGame();assert.equal(g.score,0);assert.equal(g.wave,1);assert.equal(g.lives,3);assert.equal(g.coffee,0);assert.equal(g.status,'ready');
+console.log('12 simulation checks passed.');
