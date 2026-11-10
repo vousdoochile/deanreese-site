@@ -22,6 +22,6 @@ Preview only. Do not merge or promote to production until Dean has tried it and 
 ## Rising-tension update
 
 - Every wave increases movement speed, descent, fire rate and bullet speed on a smooth bounded curve. The remaining invaders speed up as the formation thins. No sudden extra health, unavoidable spread shots, or changed controls.
-- Music is an original four-note square-wave bass pulse with a low-pass filter. It speeds up with the wave, fewer remaining enemies and their approach. Its peak gain is .009 vs .035 for effects; effects also duck music to 32% briefly.
+- Music is an original four-note square-wave low-mid pulse with a low-pass filter. It speeds up with the wave, fewer remaining enemies and their approach. Its peak gain is .020 vs .035 for effects; effects duck music gently to 70% briefly. The pulse uses 220–294 Hz notes and a 1000 Hz low-pass filter so it remains audible on small speakers. The laser voice and gain are unchanged.
 - Sound still starts off. Sound controls everything; Music can be switched off independently to keep just effects. Music rests between waves and on pause/game-over. No background scheduler, external audio files or added dependencies.
 - `node --test tests/deanvaders*.test.cjs` runs all simulation, progression, audio scheduling/mixing/muting/lifecycle checks (the original 12 checks plus 19 named tests).

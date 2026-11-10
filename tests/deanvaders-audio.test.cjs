@@ -40,11 +40,11 @@ test('silent by default, and suspended contexts never schedule audio', async()=>
   await audio.unlock(); audio.update(game); assert.equal(context.oscillators.length,1);
 });
 test('music stays lower than effects and ducks under a laser', async()=>{
-  assert.ok(MUSIC_LEVEL < EFFECT_LEVEL / 3);
+  assert.ok(MUSIC_LEVEL < EFFECT_LEVEL);
   const {context,audio,game} = setup(); await audio.unlock(); audio.setEnabled(true); game.sound='shot'; audio.update(game);
   assert.equal(context.oscillators.length,2); assert.equal(context.oscillators[0].type,'sine'); assert.equal(context.oscillators[1].type,'square');
-  assert.equal(context.filters[0].type,'lowpass'); assert.equal(context.filters[0].frequency.value,620);
-  assert.ok(context.gains[0].gain.events.some(e=>e[0]==='set' && e[1]===.32));
+  assert.equal(context.filters[0].type,'lowpass'); assert.equal(context.filters[0].frequency.value,1000);
+  assert.ok(context.gains[0].gain.events.some(e=>e[0]==='set' && e[1]===.7));
   assert.ok(context.gains[1].gain.events.some(e=>e[0]==='linear' && e[1]===EFFECT_LEVEL));
   assert.ok(context.gains[2].gain.events.some(e=>e[0]==='linear' && e[1]===MUSIC_LEVEL));
 });
@@ -52,7 +52,7 @@ test('original four-note pulse loops without a catch-up burst', async()=>{
   const {context,audio,game}=setup(); await audio.unlock(); audio.setEnabled(true);
   for (const time of [0, .7, 1.4, 2.1, 100]) { context.currentTime=time; audio.update(game); }
   const notes=context.oscillators.map(n=>n.frequency.events[0][1]);
-  assert.deepEqual(notes,[146.83,130.81,110,123.47,146.83]);
+  assert.deepEqual(notes,[293.66,261.63,220,246.94,293.66]);
   audio.update(game); assert.equal(context.oscillators.length,5);
 });
 test('tempo grows with waves, thinning enemies and enemy approach, with a ceiling', ()=>{
@@ -79,7 +79,7 @@ test('mute/pause/intermission/game over stop music immediately', async()=>{
 test('resuming/restarting cannot stack tracks; dispose releases nodes/context', async()=>{
   const {context,audio,game}=setup(); await audio.unlock(); audio.setEnabled(true); audio.update(game);
   audio.silence(); context.currentTime=5; audio.update(game); assert.equal(context.oscillators.length,2);
-  audio.reset(); context.currentTime=6; audio.update(game); assert.equal(context.oscillators[2].frequency.events[0][1],146.83);
+  audio.reset(); context.currentTime=6; audio.update(game); assert.equal(context.oscillators[2].frequency.events[0][1],293.66);
   audio.dispose(); assert.equal(context.state,'closed'); assert.ok(context.filters[0].disconnected); assert.ok(context.gains[0].disconnected);
   audio.update(game); assert.equal(context.oscillators.length,3);
 });

@@ -1,8 +1,9 @@
 import { clamp, Game, getPressure } from "./engine";
 
-// An original four-note bass pulse, synthesized locally. No samples or downloads.
-const NOTES = [146.83, 130.81, 110, 123.47];
-export const MUSIC_LEVEL = .009;
+// An original four-note pulse, synthesized locally. Low-mid notes stay audible
+// on small PC/phone speakers; the lasers retain their original voice and level.
+const NOTES = [293.66, 261.63, 220, 246.94];
+export const MUSIC_LEVEL = .02;
 export const EFFECT_LEVEL = .035;
 export const pulseInterval = (pressure: number) => .66 - clamp(pressure, 0, 1) * .44;
 type Voice = { oscillator: OscillatorNode; gain: GainNode; music: boolean };
@@ -22,7 +23,7 @@ export class ArcadeAudio {
     this.musicBus = context.createGain();
     this.filter = context.createBiquadFilter();
     this.filter.type = "lowpass";
-    this.filter.frequency.value = 620;
+    this.filter.frequency.value = 1000;
     this.filter.Q.value = .5;
     this.filter.connect(this.musicBus);
     this.musicBus.connect(context.destination);
@@ -74,7 +75,8 @@ export class ArcadeAudio {
     oscillator.frequency.exponentialRampToValueAtTime(frequency * (music ? .93 : .5), now + .09);
     gain.gain.setValueAtTime(.0001, now);
     gain.gain.linearRampToValueAtTime(music ? MUSIC_LEVEL : EFFECT_LEVEL, now + .004);
-    gain.gain.exponentialRampToValueAtTime(.0001, now + .11);
+    if (music) gain.gain.setValueAtTime(MUSIC_LEVEL * .7, now + .035);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + (music ? .16 : .11));
     oscillator.connect(gain);
     gain.connect(music ? this.filter : ac.destination);
     const voice = { oscillator, gain, music };
@@ -82,7 +84,7 @@ export class ArcadeAudio {
     oscillator.onended = () => {
       oscillator.disconnect(); gain.disconnect(); this.voices.delete(voice);
     };
-    oscillator.start(); oscillator.stop(now + .12);
+    oscillator.start(); oscillator.stop(now + (music ? .17 : .12));
   }
 
   update(g: Game) {
@@ -98,9 +100,9 @@ export class ArcadeAudio {
       // The laser/effects remain in front of the bass, even during rapid coffee fire.
       const level = this.musicBus.gain;
       level.cancelScheduledValues(now);
-      level.setValueAtTime(.32, now);
-      level.setValueAtTime(.32, now + .09);
-      level.linearRampToValueAtTime(1, now + .19);
+      level.setValueAtTime(.7, now);
+      level.setValueAtTime(.7, now + .06);
+      level.linearRampToValueAtTime(1, now + .13);
       this.tone({ shot: 700, pop: 260, hit: 100, coffee: 900 }[g.sound], false, g.sound === "hit");
     }
     if (!this.musicEnabled || g.waveDelay > 0 || !g.enemies.length) {
