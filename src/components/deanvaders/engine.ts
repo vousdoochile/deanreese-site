@@ -15,9 +15,35 @@ export type Game = {
   cups: {x: number; y: number}[]; sparks: Spark[]; notice: string; noticeTime: number;
   sound: "shot" | "pop" | "hit" | "coffee" | null;
 };
+const WAVE_SIZE = 18;
+
+/** Smoothly increasing challenge with ceilings that remain dodgeable on touch. */
+export function getWaveTuning(wave: number) {
+  const level = Math.max(0, (Number.isFinite(wave) ? wave : 1) - 1);
+  const rise = 1 - Math.exp(-level / 7);
+  return {
+    speed: 36 + 74 * rise,
+    drop: 14 + 10 * rise,
+    fireInterval: .98 - .60 * rise,
+    hazardSpeed: 165 + 110 * rise,
+    firstShotDelay: 1.4 - .45 * rise,
+  };
+}
+
+const depletion = (count: number) => clamp(1 - count / WAVE_SIZE, 0, 1);
+
+/** Shared 0–1 tension signal for the soundtrack, without changing game state. */
+export function getPressure(g: Pick<Game, "wave" | "enemies">): number {
+  const tuning = getWaveTuning(g.wave);
+  const approach = g.enemies.reduce((deepest, e) => Math.max(deepest, e.y), 204);
+  return clamp(.35 * (tuning.speed - 36) / 74
+    + .4 * depletion(g.enemies.length)
+    + .25 * clamp((approach - 204) / (PLAYER_Y - 55 - 204), 0, 1), 0, 1);
+}
+
 export function spawnWave(wave: number): Enemy[] {
   const kinds: Kind[] = ["email", "bill", "zoom", "jira"];
-  return Array.from({length: 18}, (_, i) => ({id: wave * 100 + i,
+  return Array.from({length: WAVE_SIZE}, (_, i) => ({id: wave * 100 + i,
     x: 140 + (i % 6) * 86, y: 78 + Math.floor(i / 6) * 63,
     kind: kinds[(i + wave - 1) % 4], phase: i * .7}));
 }
@@ -57,16 +83,21 @@ export function step(g: Game, input: Input, seconds: number, random = Math.rando
     if (g.coffee>0) for (const sign of [-1,1]) g.shots.push({x:g.x+sign*11,y:PLAYER_Y-2,vx:sign*110,vy:-580});
     g.cooldown=g.coffee>0 ? .13 : .24; g.sound="shot";
   }
-  const speed=31+Math.min(g.wave-1,12)*5;
-  if (g.enemies.some(e => (g.direction>0 && e.x>=WIDTH-49) || (g.direction<0 && e.x<=49))) {
+  const tuning=getWaveTuning(g.wave);
+  const cleared=depletion(g.enemies.length);
+  // The last few invaders race across the screen, but never outrun the player.
+  const speed=Math.min(190,tuning.speed*(1+1.15*cleared));
+  let travel=g.direction*speed*dt;
+  if (g.enemies.some(e => e.x+travel>WIDTH-49 || e.x+travel<49)) {
     g.direction *= -1;
-    g.enemies.forEach(e=>e.y+=12);
+    g.enemies.forEach(e=>e.y+=tuning.drop);
+    travel=g.direction*speed*dt;
   }
-  g.enemies.forEach(e=>e.x+=g.direction*speed*dt);
+  g.enemies.forEach(e=>e.x=clamp(e.x+travel,49,WIDTH-49));
   if (g.fireClock<=0 && g.enemies.length && g.hazards.length < 16) {
     const e=g.enemies[Math.floor(random()*g.enemies.length)];
-    g.hazards.push({x:e.x,y:e.y+24,vx:clamp((g.x-e.x)*.12,-40,40),vy:150+Math.min(g.wave,15)*9});
-    g.fireClock=Math.max(.34,1.05-g.wave*.055);
+    g.hazards.push({x:e.x,y:e.y+24,vx:clamp((g.x-e.x)*.12,-40,40),vy:tuning.hazardSpeed});
+    g.fireClock=Math.max(.30,tuning.fireInterval*(1-.28*cleared));
   }
   for (const s of g.shots) {s.x+=s.vx*dt; s.y+=s.vy*dt;}
   for (const s of g.hazards) {s.x+=s.vx*dt; s.y+=s.vy*dt;}
@@ -104,6 +135,6 @@ export function step(g: Game, input: Input, seconds: number, random = Math.rando
   }
   if(g.waveDelay>0) {
     g.waveDelay-=dt;
-    if(g.waveDelay<=0) {g.wave++; g.enemies=spawnWave(g.wave); g.waveDelay=0; g.fireClock=1.4; g.shots=[];}
+    if(g.waveDelay<=0) {g.wave++; g.enemies=spawnWave(g.wave); g.waveDelay=0; g.fireClock=getWaveTuning(g.wave).firstShotDelay; g.direction=1; g.shots=[];}
   }
 }
