@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Container from "../../components/Container";
 
 
@@ -17,10 +17,12 @@ export default function ChatPage() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const canSend = useMemo(() => text.trim().length > 0 && !loading, [text, loading]);
+  const sending = useRef(false);
+  const canSend = useMemo(() => text.trim().length > 0 && text.length <= 1500 && !loading, [text, loading]);
 
   async function send() {
-    if (!canSend) return;
+    if (!canSend || sending.current) return;
+    sending.current = true;
 
     const nextMessages: Msg[] = [...messages, { role: "user", content: text.trim() }];
     setMessages(nextMessages);
@@ -31,19 +33,22 @@ export default function ChatPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({ message: text.trim() }),
+        signal: AbortSignal.timeout(25_000),
       });
 
       const data = (await res.json()) as { answer?: string };
-      const answer = (data.answer || "I don’t have that information on the site yet.").trim();
+      const answer = (typeof data.answer === "string" && data.answer.trim())
+        || (res.ok ? "I don’t have that information on the site yet." : "Q&A is temporarily unavailable. Please try again later.");
 
       setMessages([...nextMessages, { role: "assistant", content: answer }]);
     } catch {
       setMessages([
         ...nextMessages,
-        { role: "assistant", content: "I don’t have that information on the site yet." },
+        { role: "assistant", content: "Q&A is temporarily unavailable. Please try again later." },
       ]);
     } finally {
+      sending.current = false;
       setLoading(false);
     }
   }
@@ -70,6 +75,8 @@ export default function ChatPage() {
         <div className="border-t border-neutral-200 p-4">
           <div className="flex flex-col gap-3 sm:flex-row">
             <input
+              aria-label="Question about Dean"
+              maxLength={1500}
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => {

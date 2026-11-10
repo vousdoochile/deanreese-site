@@ -18,7 +18,7 @@ export default function Deanvaders() {
   const soundOn=useRef(false);
   const reduced=useRef(false);
   const [status,setStatus]=useState<Game["status"]>("ready");
-  const [hud,setHud]=useState({score:0,wave:1,lives:3,coffee:0});
+  const [hud,setHud]=useState({score:0,wave:1,lives:3,coffee:0,kills:0});
   const [best,setBest]=useState(0);
   const [muted,setMuted]=useState(true);
   const [calm,setCalm]=useState(false);
@@ -34,7 +34,7 @@ export default function Deanvaders() {
   },[]);
   const start=()=>{
     game.current=createGame();game.current.status="playing";input.current=emptyInput();
-    setHud({score:0,wave:1,lives:3,coffee:0});setStatus("playing");
+    setHud({score:0,wave:1,lives:3,coffee:0,kills:0});setStatus("playing");
     setMessage("Game started. Move with arrow keys or A and D. Hold Space to fire.");
     canvas.current?.focus();
     void audio.current?.resume().catch(()=>{});
@@ -44,17 +44,21 @@ export default function Deanvaders() {
   useEffect(()=>{
     const img=new Image();img.onload=paint;img.src="/deanvaders-head.webp";head.current=img;
     const media=window.matchMedia("(prefers-reduced-motion: reduce)");
-    reduced.current=media.matches;setCalm(media.matches);
+    reduced.current=media.matches;
+    // Initialize browser-only preferences after hydration, with cleanup on unmount.
+    const preferencesFrame=requestAnimationFrame(()=>{
+      setCalm(media.matches);
+      try {const n=Number(localStorage.getItem(bestKey));if(Number.isFinite(n)&&n>0)setBest(Math.floor(n));}catch{/* Storage is optional. */}
+    });
     const change=()=>{reduced.current=media.matches;setCalm(media.matches);paint();};
     media.addEventListener("change",change);
-    try {const n=Number(localStorage.getItem(bestKey));if(Number.isFinite(n)&&n>0)setBest(Math.floor(n));}catch{/* Storage is optional. */}
     paint();
     const onHidden=()=>{if(document.hidden)pause();};
     document.addEventListener("visibilitychange",onHidden);
     window.addEventListener("blur",pause);
     const observer=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)pause();},{threshold:0});
     if(shell.current)observer.observe(shell.current);
-    return ()=>{media.removeEventListener("change",change);document.removeEventListener("visibilitychange",onHidden);window.removeEventListener("blur",pause);observer.disconnect();img.onload=null;void audio.current?.close().catch(()=>{});};
+    return ()=>{cancelAnimationFrame(preferencesFrame);media.removeEventListener("change",change);document.removeEventListener("visibilitychange",onHidden);window.removeEventListener("blur",pause);observer.disconnect();img.onload=null;void audio.current?.close().catch(()=>{});};
   },[paint,pause]);
 
   useEffect(()=>{
@@ -77,7 +81,7 @@ export default function Deanvaders() {
       }
       paint();
       if(now-lastHud>100 || g.status==="over"){
-        setHud({score:g.score,wave:g.wave,lives:g.lives,coffee:g.coffee});lastHud=now;
+        setHud({score:g.score,wave:g.wave,lives:g.lives,coffee:g.coffee,kills:g.kills});lastHud=now;
       }
       if(g.noticeTime>0 && g.notice!==lastNotice){lastNotice=g.notice;setMessage(g.notice);}
       if(g.status==="over"){
@@ -110,12 +114,12 @@ export default function Deanvaders() {
     input.current.target=(e.clientX-rect.left)/rect.width*WIDTH;
   };
   const release=()=>{input.current.target=null;input.current.fire=false;};
-  const touch=(direction:"left"|"right"|"fire",down:boolean)=>(e:React.PointerEvent<HTMLButtonElement>)=>{
+  const touch=(e:React.PointerEvent<HTMLButtonElement>,direction:"left"|"right"|"fire",down:boolean)=>{
     e.preventDefault();
     if(down){e.currentTarget.setPointerCapture(e.pointerId);canvas.current?.focus();}
     input.current[direction]=down;
   };
-  const controlKey=(direction:"left"|"right"|"fire",down:boolean)=>(e:React.KeyboardEvent<HTMLButtonElement>)=>{
+  const controlKey=(e:React.KeyboardEvent<HTMLButtonElement>,direction:"left"|"right"|"fire",down:boolean)=>{
     if(e.key!==" " && e.key!=="Enter")return;
     e.preventDefault();e.stopPropagation();input.current[direction]=down;
   };
@@ -139,7 +143,7 @@ export default function Deanvaders() {
         <div className={styles.intro}>
           <span className={styles.eyebrow}>{status==="ready"?"GET YOUR HEAD IN THE GAME":status==="paused"?"TAKE YOUR TIME":"THE INBOX ALWAYS RETURNS"}</span>
           <h2>{status==="ready"?<>DEAN<span>VADERS</span></>:status==="paused"?"COFFEE BREAK.":"OUT OF OFFICE."}</h2>
-          <p>{status==="ready"?"One head. Two lasers. Entirely too many meetings.":status==="paused"?"Your peace and your progress are protected.":`You cleared ${game.current.kills} distractions and scored ${hud.score.toLocaleString()} points.`}</p>
+          <p>{status==="ready"?"One head. Two lasers. Entirely too many meetings.":status==="paused"?"Your peace and your progress are protected.":`You cleared ${hud.kills} distractions and scored ${hud.score.toLocaleString()} points.`}</p>
           <button className={styles.play} onClick={status==="paused"?resume:start}>{status==="ready"?"LET'S CLEAR MY SCHEDULE":status==="paused"?"BACK TO IT":"ONE MORE COFFEE ↻"}<span aria-hidden="true">{status==="ready"?" →":""}</span></button>
           <div className={styles.introHint}>{status==="ready"?"Move ← → or A / D · Hold SPACE to fire":"No rush. This is the fun kind of work."}</div>
           {status==="ready" && <div className={styles.touchHint}>On your phone? Drag anywhere in the game to move + fire.</div>}
@@ -148,9 +152,9 @@ export default function Deanvaders() {
     </div>
     <div className={styles.controls}>
       <div className={styles.touchControls} aria-label="Touch game controls">
-        <button aria-label="Move left" disabled={status!=="playing"} onPointerDown={touch("left",true)} onPointerUp={touch("left",false)} onPointerCancel={touch("left",false)} onLostPointerCapture={touch("left",false)} onKeyDown={controlKey("left",true)} onKeyUp={controlKey("left",false)} onBlur={()=>{input.current.left=false;}}>←</button>
-        <button aria-label="Move right" disabled={status!=="playing"} onPointerDown={touch("right",true)} onPointerUp={touch("right",false)} onPointerCancel={touch("right",false)} onLostPointerCapture={touch("right",false)} onKeyDown={controlKey("right",true)} onKeyUp={controlKey("right",false)} onBlur={()=>{input.current.right=false;}}>→</button>
-        <button aria-label="Fire eye lasers" className={styles.fire} disabled={status!=="playing"} onPointerDown={touch("fire",true)} onPointerUp={touch("fire",false)} onPointerCancel={touch("fire",false)} onLostPointerCapture={touch("fire",false)} onKeyDown={controlKey("fire",true)} onKeyUp={controlKey("fire",false)} onBlur={()=>{input.current.fire=false;}}>FIRE</button>
+        <button aria-label="Move left" disabled={status!=="playing"} onPointerDown={e=>touch(e,"left",true)} onPointerUp={e=>touch(e,"left",false)} onPointerCancel={e=>touch(e,"left",false)} onLostPointerCapture={e=>touch(e,"left",false)} onKeyDown={e=>controlKey(e,"left",true)} onKeyUp={e=>controlKey(e,"left",false)} onBlur={()=>{input.current.left=false;}}>←</button>
+        <button aria-label="Move right" disabled={status!=="playing"} onPointerDown={e=>touch(e,"right",true)} onPointerUp={e=>touch(e,"right",false)} onPointerCancel={e=>touch(e,"right",false)} onLostPointerCapture={e=>touch(e,"right",false)} onKeyDown={e=>controlKey(e,"right",true)} onKeyUp={e=>controlKey(e,"right",false)} onBlur={()=>{input.current.right=false;}}>→</button>
+        <button aria-label="Fire eye lasers" className={styles.fire} disabled={status!=="playing"} onPointerDown={e=>touch(e,"fire",true)} onPointerUp={e=>touch(e,"fire",false)} onPointerCancel={e=>touch(e,"fire",false)} onLostPointerCapture={e=>touch(e,"fire",false)} onKeyDown={e=>controlKey(e,"fire",true)} onKeyUp={e=>controlKey(e,"fire",false)} onBlur={()=>{input.current.fire=false;}}>FIRE</button>
       </div>
       <div className={styles.settings}>
         <button onClick={()=>status==="paused"?resume():pause()} disabled={status==="ready"||status==="over"}>{status==="paused"?"▶ Resume":"Ⅱ Pause"}</button>
