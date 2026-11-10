@@ -18,3 +18,10 @@ A small original arcade game at `/play` and in a window on the homepage.
 Manual browser checklist: start; movement; firing/scoring; coffee; pause/resume; blur; game-over/restart; sound off/on; reduced effects; narrow mobile layout; no overflow; unchanged site navigation.
 
 Preview only. Do not merge or promote to production until Dean has tried it and approved.
+
+## Rising-tension update
+
+- Every wave increases movement speed, descent, fire rate and bullet speed on a smooth bounded curve. The remaining invaders speed up as the formation thins. No sudden extra health, unavoidable spread shots, or changed controls.
+- Music is an original four-note square-wave bass pulse with a low-pass filter. It speeds up with the wave, fewer remaining enemies and their approach. Its peak gain is .009 vs .035 for effects; effects also duck music to 32% briefly.
+- Sound still starts off. Sound controls everything; Music can be switched off independently to keep just effects. Music rests between waves and on pause/game-over. No background scheduler, external audio files or added dependencies.
+- `node --test tests/deanvaders*.test.cjs` runs all simulation, progression, audio scheduling/mixing/muting/lifecycle checks (the original 12 checks plus 18 named tests).
