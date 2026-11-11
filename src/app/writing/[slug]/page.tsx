@@ -27,13 +27,15 @@ export function generateStaticParams() {
   return orderedWritingPosts.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = writingPosts[params.slug];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = writingPosts[slug];
   return post ? { title: post.title, description: post.summary, ...(post.coverImage ? { openGraph: { images: [post.coverImage] } } : {}) } : { title: "Writing" };
 }
 
-export default function PostPage({ params }: { params: { slug: string } }) {
-  const post = writingPosts[params.slug];
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = writingPosts[slug];
   if (!post) {
     return (
       <Container>

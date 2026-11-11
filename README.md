@@ -25,8 +25,11 @@ Push changes to GitHub's `main` branch. Vercel will automatically build and depl
 ## Develop and validate
 
 ```powershell
-npm install
+npm ci
+npm test
+npm run typecheck
+npm run lint
 npm run build
 ```
 
-Create `.env.local` with `OPENAI_API_KEY` to test the chat API locally (never commit secrets). In production the key lives in Vercel environment variables.
+Chat is disabled until its credited OpenAI project and shared quotas are configured. See [chat activation and cost controls](docs/CHAT-OPERATIONS.md) before enabling it. Do not commit secrets. Automated tests use mocks and do not require API keys or consume credits.
